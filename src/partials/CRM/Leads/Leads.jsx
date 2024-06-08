@@ -1,10 +1,14 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import LeadRowContainer from "./LeadRowContainer";
 import EditLead from './ManageLeads/EditLead/EditLead.jsx';
 
 const Leads = () => {
   const leadStoreData = useSelector((state) => state.leadStore);
+  const [leadData,setLeadData]=useState(leadStoreData);
+  useEffect(() => {
+    setLeadData(leadStoreData);
+  },[leadStoreData]);
   const [showModal , setShowModal] = useState(false);
   return (
     <>
@@ -47,8 +51,8 @@ const Leads = () => {
               </div>
 
               <div className="mx-5">
-                <h4 className="text-2xl font-semibold text-gray-700">8</h4>
-                <div className="text-gray-500">New Leads</div>
+                <h4 className="text-2xl font-semibold text-gray-700">{leadData.length}</h4>
+                <div className="text-gray-500">Total Leads</div>
               </div>
             </div>
           </div>
@@ -79,9 +83,9 @@ const Leads = () => {
 
               <div className="mx-5">
                 <h4 className="text-2xl font-semibold text-gray-700">
-                  {leadStoreData.length}
+                  {leadData.filter((lead) => lead.status === "Active").length}
                 </h4>
-                <div className="text-gray-500">Total Leads</div>
+                <div className="text-gray-500">Active Leads</div>
               </div>
             </div>
           </div>
@@ -111,8 +115,10 @@ const Leads = () => {
               </div>
 
               <div className="mx-5">
-                <h4 className="text-2xl font-semibold text-gray-700">20</h4>
-                <div className="text-gray-500">Available Lead</div>
+                <h4 className="text-2xl font-semibold text-gray-700">{
+                  leadData.filter((lead) => lead.status === "Pending").length
+                  }</h4>
+                <div className="text-gray-500">Pending Lead</div>
               </div>
             </div>
           </div>

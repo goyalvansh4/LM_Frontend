@@ -1,10 +1,15 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import UserRowContainer from "./UserRowContainer";
 import EditUser from "./ManageUsers/EditUserData/EditUser";
 
 const Users = () => {
   const userStoreData = useSelector((state) => state.userStore);
+  const leadStoreData = useSelector((state) => state.leadStore);
+  const [userData, setUserData] = useState(userStoreData);
+  useEffect(() => {
+    setUserData(userStoreData);
+  }, [userStoreData])
   const [showModal , setShowModal] = useState(false);
   return (
     <>
@@ -47,8 +52,9 @@ const Users = () => {
               </div>
 
               <div className="mx-5">
-                <h4 className="text-2xl font-semibold text-gray-700">2</h4>
-                <div className="text-gray-500">New Users</div>
+                <h4 className="text-2xl font-semibold text-gray-700">{
+                 userData.length }</h4>
+                <div className="text-gray-500">Total Users</div>
               </div>
             </div>
           </div>
@@ -79,9 +85,9 @@ const Users = () => {
 
               <div className="mx-5">
                 <h4 className="text-2xl font-semibold text-gray-700">
-                  {userStoreData.length}
+                  {leadStoreData.length}
                 </h4>
-                <div className="text-gray-500">Total Users</div>
+                <div className="text-gray-500">Lead Assign</div>
               </div>
             </div>
           </div>
@@ -109,9 +115,8 @@ const Users = () => {
                   ></path>
                 </svg>
               </div>
-
               <div className="mx-5">
-                <h4 className="text-2xl font-semibold text-gray-700">5</h4>
+                <h4 className="text-2xl font-semibold text-gray-700">{userStoreData.length}</h4>
                 <div className="text-gray-500">Available Users</div>
               </div>
             </div>

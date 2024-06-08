@@ -39,7 +39,7 @@ const Card = () => {
        <ProgressBar  progress={(userData.length/100)*100} subtitle={"Users"}  background={"#ddd"} transitionDuration={0.5} gradient={[{stop: 0.0, color: '#e39b96'}, {stop: 1, color: '#cc2216'}]} />
        </div>    
         <div className="col-span-12 sm:col-span-6 xl:col-span-3 intro-y">
-       <ProgressBar progress={75} subtitle={"Task"}  background={"#ddd"} transitionDuration={0.5} gradient={[{stop: 0.0, color: '#9de3cf'}, {stop: 1, color: '#0bd49a'}]} />
+       <ProgressBar progress={((leadData.length)+(userData.length))} subtitle={"Task"}  background={"#ddd"} transitionDuration={0.5} gradient={[{stop: 0.0, color: '#9de3cf'}, {stop: 1, color: '#0bd49a'}]} />
        </div>     
     </div>
 

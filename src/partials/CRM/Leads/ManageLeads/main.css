@@ -38,7 +38,7 @@
 }
 
 .modalContainer .body {
-  flex: 50%;
+  /* width: 80%; */
   display: flex;
   justify-content: center;
   align-items: center;
@@ -54,7 +54,7 @@
 }
 
 .modalContainer .footer button {
-  width: 150px;
+  width: 50%;
   height: 45px;
   margin: 10px;
   border: none;

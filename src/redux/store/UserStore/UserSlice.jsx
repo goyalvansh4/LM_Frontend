@@ -1,29 +1,33 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { userData } from './UserData';
 
+// console.log(UserData);
+const fetchUserData = () => {
+  const users = localStorage.getItem('users');
+  return users ? JSON.parse(users) : [];
+}
 
-// console.log(LeadData);
-const initialState = userData;
+const initialState = fetchUserData();
 export const userSlice = createSlice({
   name: 'AddUser',
   initialState,
   reducers: {
     addUser: (state=initialState, action) => {
-      //console.log(action.payload);
-      let id = state.length + 1;
-      action.payload.id = id;
-      // state = action.payload
-      return [action.payload,...state];
+      const newUser = { ...action.payload, id: state.length + 1 };
+      const updatedState = [newUser, ...state];
+      localStorage.setItem("users", JSON.stringify(updatedState));
+      return updatedState;
     },
     editUser: (state=initialState, action) => {
-      //console.log(initialState);
-      const editedData = initialState.map((user) => user.id !== action.payload.id ? {...user} :{ ...action.payload });
-      //console.log(editedData);
-      //const {id,name,email,title,department,role,status} = action.payload;
-      return editedData;
+      const updatedState = state.map((user) =>
+        user.id === action.payload.id ? { ...action.payload } : user
+      );
+      localStorage.setItem("users", JSON.stringify(updatedState));
+      return updatedState;
     },
     deleteUser: (state, action) => {
-      return state.filter((user) => user.id !== action.payload);
+      const updatedState = state.filter((user) => user.id !== action.payload);
+      localStorage.setItem("users", JSON.stringify(updatedState));
+      return updatedState;
     },
   }
 })

@@ -1,15 +1,17 @@
 import React, { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { addLead } from "../../../../../redux/store/LeadsStore/LeadSlice";
 
 const Form = ({ setModalOpen }) => {
+  const userStoreData = useSelector((state) => state.userStore);
+  const [userData, setUserData] = useState(userStoreData);
   const dispatch = useDispatch();
   const [formData, setFormData] = useState({
     name: "",
     email: "",
     title: "",
     department: "",
-    role: "",
+    assign: "",
     status: "",
   });
 
@@ -27,13 +29,14 @@ const Form = ({ setModalOpen }) => {
     dispatch(addLead(formData));
     console.log("Form submitted:", formData);
     setModalOpen(false);
+    setUserData(userStoreData);
   };
 
   return (
     // <div className="ml-5 max-w-xs">
     <form
       onSubmit={handleSubmit}
-      className="bg-white shadow-md rounded pt-6 pb-8 mb-4"
+      className=  "w-100 flex flex-col bg-white shadow-md rounded pt-6 pb-8 mb-4"
     >
       <div className="mb-4">
         <label className=" text-xl text-gray-500">Name:</label>
@@ -47,8 +50,9 @@ const Form = ({ setModalOpen }) => {
         />
       </div>
       <div className="mb-4">
-        <label className="text-xl w-40 text-gray-500">
+        <label className="text-xl  text-gray-500">
           Email:
+          </label>
           <input
             type="email"
             name="email"
@@ -57,11 +61,11 @@ const Form = ({ setModalOpen }) => {
             required
             className="mt-1 w-60  ml-5 border-gray-300 rounded-md shadow-sm"
           />
-        </label>
       </div>
       <div className="mb-6">
         <label className=" text-xl text-gray-500">
           Title:
+        </label>
           <input
             type="text"
             name="title"
@@ -70,11 +74,12 @@ const Form = ({ setModalOpen }) => {
             required
             className="mt-1  ml-5 border-gray-300 rounded-md shadow-sm"
           />
-        </label>
+        
       </div>
       <div className="mb-6">
-        <label className="w-20 text-xl text-gray-500">
-          Department:
+        <label className="text-xl text-gray-500">
+          Dept:
+        </label>
           <input
             type="text"
             name="department"
@@ -83,17 +88,17 @@ const Form = ({ setModalOpen }) => {
             required
             className="mt-1 w-60  ml-5 border-gray-300 rounded-md shadow-sm"
           />
-        </label>
       </div>
       <div className="mb-6">
-        <label className="w-20 text-xl text-gray-500">
+        <label htmlFor="status" className="w-20 text-xl text-gray-500">
           Status:
+        </label>
           <select
             name="status"
             // value={formData.status}
             onChange={handleChange}
             required
-            className="mt-1 ml-5 border-gray-300 rounded-md shadow-sm"
+            className="mt-1 w-60 ml-5 border-gray-300 rounded-md shadow-sm"
           >
             <option value="">Select Status</option>
             <option value="Active">Active</option>
@@ -101,20 +106,28 @@ const Form = ({ setModalOpen }) => {
             <option value="Rejected">Rejected</option>
             <option value="Completed">Completed</option>
           </select>
-        </label>
+        
       </div>
       <div className="mb-6">
-        <label className=" text-xl text-gray-500">
-          Role:
-          <input
-            type="text"
-            name="role"
-            value={formData.role}
+        <label htmlFor="assign" className=" text-xl text-gray-500">
+          Assign:
+        </label>
+        <select
+            name="assign"
+            // value={formData.status}
             onChange={handleChange}
             required
-            className="mt-1  ml-5 border-gray-300 rounded-md shadow-sm"
-          />
-        </label>
+            className="mt-1 w-60 ml-5 border-gray-300 rounded-md shadow-sm"
+          >
+          <option value="">Select User</option>
+           {userData.map((user) => {
+            return (
+              <option key={user.id} value={user.name}>
+                {user.name}
+              </option>
+            );
+           })}
+        </select>
       </div>
       <button
         type="submit"

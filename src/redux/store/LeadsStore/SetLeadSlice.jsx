@@ -1,7 +1,8 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { LeadData } from './LeadData';
+//import { LeadData } from './LeadData';
 
-const initialState = LeadData;
+
+
 const setLeadSlice = createSlice({
   name: 'setLead',
   initialState: null,

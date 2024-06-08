@@ -32,9 +32,11 @@ const LeadRowContainer = ({setShowModal}) => {
             Status
           </th>
           <th className="px-6 py-3 text-xs font-medium leading-4 tracking-wider text-left text-gray-500 uppercase border-b border-gray-200 bg-gray-50">
-            Role
+            Assign
           </th>
-          <th className="px-6 py-3 border-b border-gray-200 bg-gray-50"></th>
+          <th className=" py-3 text-xs font-medium leading-4 tracking-wider text-center text-gray-500 uppercase border-b border-gray-200 bg-gray-50">
+            Manage
+          </th>
         </tr>
       </thead>
       <tbody className="bg-white">
@@ -73,7 +75,7 @@ const LeadRowContainer = ({setShowModal}) => {
           </td>
 
           <td className="px-6 py-4 text-sm leading-5 text-gray-500 whitespace-no-wrap border-b border-gray-200">
-            {lead.role}
+            {lead.assign}
           </td>
 
           <td className="px-6 py-4 flex flex-col gap-2 text-sm font-medium leading-5 text-right whitespace-no-wrap border-b border-gray-200">

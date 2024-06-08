@@ -13,13 +13,13 @@ const SignUp = () => {
   };
   return (
     <div className="flex items-center justify-center h-screen overflow-hidden">
-      <div className="w-full bg-gray-100 lg:w-1/2 flex items-center justify-center">
+      <div className="rounded-3xl  bg-gray-100 lg:w-1/3 flex items-center justify-center">
         <div className="max-w-md w-full p-6">
           <h1 className="text-3xl font-semibold mb-6 text-black text-center">
             Sign Up
           </h1>
           <h1 className="text-sm font-semibold mb-6 text-gray-500 text-center">
-            Join to Our Community with all time access and free{" "}
+            Join to Our Community with all time access and free
           </h1>
           <div className="mt-4 flex flex-col lg:flex-row items-center justify-between">
             <div className="w-full lg:w-1/2 mb-2 lg:mb-0">
@@ -50,7 +50,7 @@ const SignUp = () => {
                     d="m419.404 58.936-82.933 67.896C313.136 112.246 285.552 103.82 256 103.82c-66.729 0-123.429 42.957-143.965 102.724l-83.397-68.276h-.014C71.23 56.123 157.06 0 256 0c62.115 0 119.068 22.126 163.404 58.936z"
                   ></path>
                 </svg>{" "}
-                Sign Up with Google{" "}
+                Sign Up with Google
               </button>
             </div>
             <div className="w-full lg:w-1/2 ml-0 lg:ml-2">

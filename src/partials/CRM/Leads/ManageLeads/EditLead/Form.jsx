@@ -4,17 +4,17 @@ import { useDispatch, useSelector } from "react-redux";
 import { editLead } from "../../../../../redux/store/LeadsStore/LeadSlice";
 
 const Form = ({ setShowModal }) => {
-   //console.log("Lead Data:", lead);
+   
    const lead = useSelector((state) => state.setLeadId);
-  //  console.log("Lead Id:", lead);
-  //const editLeadData = useSelector((state) => state.leads.setLeadId);
+    const userStoreData = useSelector((state) => state.userStore);
+    const [userData, setUserData] = useState(userStoreData);
   const [formData, setFormData] = useState({
     id: lead.id,
     name: lead.name || "",
     email: lead.email || "",
     title: lead.title || "",
     department: lead.department || "",
-    role: lead.role || "",
+    assign: lead.assign || "",
     status: lead.status || "",
   });
 
@@ -28,7 +28,7 @@ const Form = ({ setShowModal }) => {
         email: lead.email,
         title: lead.title,
         department: lead.department,
-        role: lead.role,
+        assign: lead.assign,
         status: lead.status,
       });
     }
@@ -47,6 +47,7 @@ const Form = ({ setShowModal }) => {
     dispatch(editLead(formData)); // Dispatch the editLead action with the updated lead data
     console.log("Form submitted:", formData);
     setShowModal(false);
+    setUserData(userStoreData);
   };
 
   return (
@@ -123,17 +124,25 @@ const Form = ({ setShowModal }) => {
         </label>
       </div>
       <div className="mb-6">
-        <label className="text-xl text-gray-500">
-          Role:
-          <input
-            type="text"
-            name="role"
-            value={formData.role}
+        <label htmlFor="assign" className=" text-xl text-gray-500">
+          Assign:
+        </label>
+        <select
+            name="assign"
+            value={formData.assign}
             onChange={handleChange}
             required
-            className="mt-1 ml-5 border-gray-300 rounded-md shadow-sm"
-          />
-        </label>
+            className="mt-1 w-60 ml-5 border-gray-300 rounded-md shadow-sm"
+          >
+          <option value="">Select User</option>
+           {userData.map((user) => {
+            return (
+              <option key={user.id} value={user.name}>
+                {user.name}
+              </option>
+            );
+           })}
+        </select>
       </div>
       <button
         type="submit"
