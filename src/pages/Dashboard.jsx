@@ -3,7 +3,7 @@ import Sidebar from "../partials/Sidebar";
 import Header from "../partials/Header";
 import Card from "./Card";
 import LeadContainer from "../partials/CRM/Leads/LeadContainer";
-import { Outlet, Route, Routes } from "react-router-dom";
+import {Route, Routes } from "react-router-dom";
 import UserContainer from "../partials/CRM/Users/UserContainer";
 
 function Dashboard() {

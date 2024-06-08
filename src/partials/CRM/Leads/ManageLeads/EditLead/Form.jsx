@@ -2,8 +2,9 @@ import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 //import { editLead } from "./leadSlice"; // Import the editLead action
 import { editLead } from "../../../../../redux/store/LeadsStore/LeadSlice";
+import { ToastContainer } from "react-toastify";
 
-const Form = ({ setShowModal }) => {
+const Form = ({ setShowModal}) => {
    
    const lead = useSelector((state) => state.setLeadId);
     const userStoreData = useSelector((state) => state.userStore);
@@ -45,12 +46,16 @@ const Form = ({ setShowModal }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     dispatch(editLead(formData)); // Dispatch the editLead action with the updated lead data
+    //toast.success("Lead Added Successfully");
     console.log("Form submitted:", formData);
     setShowModal(false);
     setUserData(userStoreData);
   };
-
+  const handleToast =()=>{
+    toast.success("Lead Edited Successfully");
+  }
   return (
+    <>
     <form
       onSubmit={handleSubmit}
       className="bg-white shadow-md rounded pt-6 pb-8 mb-4"
@@ -69,6 +74,7 @@ const Form = ({ setShowModal }) => {
       <div className="mb-4">
         <label className="text-xl w-40 text-gray-500">
           Email:
+          </label>
           <input
             type="email"
             name="email"
@@ -77,11 +83,11 @@ const Form = ({ setShowModal }) => {
             required
             className="mt-1 w-60 ml-5 border-gray-300 rounded-md shadow-sm"
           />
-        </label>
       </div>
       <div className="mb-6">
         <label className="text-xl text-gray-500">
           Title:
+          </label>
           <input
             type="text"
             name="title"
@@ -90,11 +96,11 @@ const Form = ({ setShowModal }) => {
             required
             className="mt-1 ml-5 border-gray-300 rounded-md shadow-sm"
           />
-        </label>
       </div>
       <div className="mb-6">
         <label className="text-xl text-gray-500">
-          Department:
+          Dept:
+          </label>
           <input
             type="text"
             name="department"
@@ -103,7 +109,6 @@ const Form = ({ setShowModal }) => {
             required
             className="mt-1 ml-5 border-gray-300 rounded-md shadow-sm"
           />
-        </label>
       </div>
       <div className="mb-6">
         <label className="text-xl text-gray-500">
@@ -146,11 +151,15 @@ const Form = ({ setShowModal }) => {
       </div>
       <button
         type="submit"
+        onClick={handleToast}
         className="py-2 px-7 text-white bg-green-400 text-xl rounded-xl text-bold"
       >
         Edit Lead
       </button>
+      <ToastContainer />
     </form>
+    
+    </>
   );
 };
 

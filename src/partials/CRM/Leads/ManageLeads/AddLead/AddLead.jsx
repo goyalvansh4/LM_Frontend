@@ -19,7 +19,7 @@ function AddLead({setModalOpen}) {
           </button>
         </div>
         <div className="body">
-          <Form setModalOpen={setModalOpen} />
+          <Form setModalOpen={setModalOpen}  />
         </div>
         <div className="footer">
           <button

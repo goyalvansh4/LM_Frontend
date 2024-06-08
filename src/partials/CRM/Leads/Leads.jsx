@@ -3,6 +3,7 @@ import { useSelector } from "react-redux";
 import LeadRowContainer from "./LeadRowContainer";
 import EditLead from './ManageLeads/EditLead/EditLead.jsx';
 
+
 const Leads = () => {
   const leadStoreData = useSelector((state) => state.leadStore);
   const [leadData,setLeadData]=useState(leadStoreData);
@@ -10,8 +11,9 @@ const Leads = () => {
     setLeadData(leadStoreData);
   },[leadStoreData]);
   const [showModal , setShowModal] = useState(false);
+
   return (
-    <>
+    <> 
       <div className="mt-4">
         <div className="flex flex-wrap -mx-6">
           <div className="w-full px-6 sm:w-1/2 xl:w-1/3">

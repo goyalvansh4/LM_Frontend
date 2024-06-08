@@ -2,6 +2,14 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setLeadId } from "../../../redux/store/LeadsStore/SetLeadSlice";
 import { deleteLead } from "../../../redux/store/LeadsStore/LeadSlice";
+// import { ToastContainer, toast } from 'react-toastify';
+// import 'react-toastify/dist/ReactToastify.css';
+
+
+
+
+
+
 const LeadRowContainer = ({setShowModal}) => {
    const leadStoreData = useSelector((state) => state.leadStore);
    const [leadData,setLeadData]=useState(leadStoreData);
@@ -15,10 +23,12 @@ const LeadRowContainer = ({setShowModal}) => {
   const handleDeleteLead = (leadId) => {
     dispatch(deleteLead(leadId));
     setLeadData(leadStoreData);
+    // toast.error("Lead Deleted Successfully");
   }
 
   return (
     <>
+    {/* <ToastContainer /> */}
     <table className="min-w-full">
       <thead>
         <tr>

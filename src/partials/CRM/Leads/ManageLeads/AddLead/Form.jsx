@@ -1,8 +1,12 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { addLead } from "../../../../../redux/store/LeadsStore/LeadSlice";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { toast } from "react-toastify";
 
-const Form = ({ setModalOpen }) => {
+
+const Form = ({ setModalOpen}) => {
   const userStoreData = useSelector((state) => state.userStore);
   const [userData, setUserData] = useState(userStoreData);
   const dispatch = useDispatch();
@@ -28,12 +32,15 @@ const Form = ({ setModalOpen }) => {
     // Handle form submission logic here, e.g., send data to API
     dispatch(addLead(formData));
     console.log("Form submitted:", formData);
+    toast.success("Lead Added Successfully");
     setModalOpen(false);
     setUserData(userStoreData);
+    
   };
 
   return (
     // <div className="ml-5 max-w-xs">
+    <>
     <form
       onSubmit={handleSubmit}
       className=  "w-100 flex flex-col bg-white shadow-md rounded pt-6 pb-8 mb-4"
@@ -137,6 +144,8 @@ const Form = ({ setModalOpen }) => {
         Add Lead
       </button>
     </form>
+    {/* <ToastContainer autoClose={1000} /> */}
+    </>
     // </div>
   );
 };
