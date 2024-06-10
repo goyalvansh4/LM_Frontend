@@ -54,6 +54,7 @@ const Form = ({ setModalOpen}) => {
           onChange={handleChange}
           required
           className="mt-1 ml-5 border-gray-300 rounded-md shadow-sm"
+          placeholder="Enter Name"
         />
       </div>
       <div className="mb-4">
@@ -67,6 +68,7 @@ const Form = ({ setModalOpen}) => {
             onChange={handleChange}
             required
             className="mt-1 w-60  ml-5 border-gray-300 rounded-md shadow-sm"
+            placeholder="Enter Email"
           />
       </div>
       <div className="mb-6">
@@ -80,6 +82,7 @@ const Form = ({ setModalOpen}) => {
             onChange={handleChange}
             required
             className="mt-1  ml-5 border-gray-300 rounded-md shadow-sm"
+            placeholder="Enter Title"
           />
         
       </div>
@@ -94,6 +97,7 @@ const Form = ({ setModalOpen}) => {
             onChange={handleChange}
             required
             className="mt-1 w-60  ml-5 border-gray-300 rounded-md shadow-sm"
+            placeholder="Enter Department"
           />
       </div>
       <div className="mb-6">
@@ -110,7 +114,6 @@ const Form = ({ setModalOpen}) => {
             <option value="">Select Status</option>
             <option value="Active">Active</option>
             <option value="Pending">Pending</option>
-            <option value="Rejected">Rejected</option>
             <option value="Completed">Completed</option>
           </select>
         

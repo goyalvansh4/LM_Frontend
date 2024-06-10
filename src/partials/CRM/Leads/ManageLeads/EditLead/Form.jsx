@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 //import { editLead } from "./leadSlice"; // Import the editLead action
 import { editLead } from "../../../../../redux/store/LeadsStore/LeadSlice";
-import { ToastContainer } from "react-toastify";
 
 const Form = ({ setShowModal}) => {
    
@@ -46,7 +45,6 @@ const Form = ({ setShowModal}) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     dispatch(editLead(formData)); // Dispatch the editLead action with the updated lead data
-    //toast.success("Lead Added Successfully");
     console.log("Form submitted:", formData);
     setShowModal(false);
     setUserData(userStoreData);
@@ -113,20 +111,21 @@ const Form = ({ setShowModal}) => {
       <div className="mb-6">
         <label className="text-xl text-gray-500">
           Status:
+        </label>
           <select
             name="status"
             value={formData.status}
             onChange={handleChange}
             required
-            className="mt-1 ml-5 border-gray-300 rounded-md shadow-sm"
+            className="mt-1 w-60 ml-5 border-gray-300 rounded-md shadow-sm"
           >
+          
             <option value="">Select Status</option>
             <option value="Active">Active</option>
             <option value="Pending">Pending</option>
-            <option value="Rejected">Rejected</option>
             <option value="Completed">Completed</option>
           </select>
-        </label>
+        
       </div>
       <div className="mb-6">
         <label htmlFor="assign" className=" text-xl text-gray-500">
@@ -139,6 +138,7 @@ const Form = ({ setShowModal}) => {
             required
             className="mt-1 w-60 ml-5 border-gray-300 rounded-md shadow-sm"
           >
+         
           <option value="">Select User</option>
            {userData.map((user) => {
             return (
@@ -147,7 +147,7 @@ const Form = ({ setShowModal}) => {
               </option>
             );
            })}
-        </select>
+          </select>
       </div>
       <button
         type="submit"
@@ -156,7 +156,6 @@ const Form = ({ setShowModal}) => {
       >
         Edit Lead
       </button>
-      <ToastContainer />
     </form>
     
     </>

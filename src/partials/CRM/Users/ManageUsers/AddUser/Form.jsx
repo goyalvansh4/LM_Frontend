@@ -43,6 +43,7 @@ const Form = ({ setModalOpen }) => {
           onChange={handleChange}
           required
           className="mt-1 ml-5 border-gray-300 rounded-md shadow-sm"
+          placeholder="Enter Name"
         />
       </div>
       <div className="mb-4">
@@ -55,6 +56,7 @@ const Form = ({ setModalOpen }) => {
             onChange={handleChange}
             required
             className="mt-1 w-60  ml-5 border-gray-300 rounded-md shadow-sm"
+            placeholder="Enter Email"
           />
         </label>
       </div>
@@ -68,6 +70,7 @@ const Form = ({ setModalOpen }) => {
             onChange={handleChange}
             required
             className="mt-1  ml-5 border-gray-300 rounded-md shadow-sm"
+            placeholder="Enter UserName"
           />
         </label>
       </div>
@@ -81,6 +84,7 @@ const Form = ({ setModalOpen }) => {
             onChange={handleChange}
             required
             className="mt-1 w-60  ml-5 border-gray-300 rounded-md shadow-sm"
+            placeholder="Enter PhoneNo"
           />
         </label>
       </div>
