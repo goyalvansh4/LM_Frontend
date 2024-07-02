@@ -1,18 +1,60 @@
 import React, { useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
+import axios from "axios";
+import Cookies from "js-cookie";
 
 const Login = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [formData, setFormData] = useState({
+    email: "",
+    password: "",
+  });
+
+  const [alertBox, setAlertBox] = useState({
+    visible: false,
+    message: "",
+  });
+
+  const handleChange = (e) => {
+    setAlertBox({ visible: false });
+
+    const { name, value } = e.target;
+
+    setFormData({ ...formData, [name]: value });
+  };
+
   const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(e.target.email.value);
-    console.log(e.target.password.value);
-    const email = e.target.email.value;
-    const password = e.target.password.value;
-    navigate("/admin");
+
+    try {
+      const response = await axios.post(
+        "http://192.168.169.246:8000/api/v1/admin/login", // replace with your API endpoint
+        {
+          email: formData.email,
+          password: formData.password,
+        },
+        {
+          headers: {
+            Accept: "application/json",
+          },
+        }
+      );
+
+      if (response.data.status === "success") {
+        let auth_token = response.data.data.token;
+
+        Cookies.set("auth_token", auth_token, { expires: 2 }); // The cookie will expire in 2 days
+
+        navigate("/admin");
+      } else {
+        setAlertBox({ visible: true, message: response.data.message });
+      }
+    } catch (error) {
+      console.error("Error posting data:", error);
+    }
+
+    // navigate("/admin");
     // console.log("form submitted");
   };
 
@@ -24,6 +66,12 @@ const Login = () => {
             Log in to your account
           </h1>
 
+          {alertBox.visible && (
+            <div className="bg-red-500 text-white p-3 rounded-md mt-4">
+              {alertBox.message}
+            </div>
+          )}
+
           <form className="mt-6" onSubmit={handleSubmit}>
             <div>
               <label className="block text-gray-700">Email Address</label>
@@ -31,8 +79,7 @@ const Login = () => {
                 type="email"
                 name="email"
                 id="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                onChange={handleChange}
                 placeholder="Enter Email Address"
                 className="w-full px-4 py-3 rounded-lg bg-gray-200 mt-2 border focus:border-blue-500 focus:bg-white focus:outline-none"
                 autoFocus
@@ -47,8 +94,7 @@ const Login = () => {
                 type="password"
                 name="password"
                 id="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
+                onChange={handleChange}
                 placeholder="Enter Password"
                 minLength="6"
                 className="w-full px-4 py-3 rounded-lg bg-gray-200 mt-2 border focus:border-blue-500

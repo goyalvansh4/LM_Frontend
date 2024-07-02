@@ -2,14 +2,18 @@ import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import LeadRowContainer from "./LeadRowContainer";
 import EditLead from './ManageLeads/EditLead/EditLead.jsx';
+import LeadsData from "./LeadsData/LeadsData.jsx";
 
 
 const Leads = () => {
-  const leadStoreData = useSelector((state) => state.leadStore);
-  const [leadData,setLeadData]=useState(leadStoreData);
+  const [leadData, setLeadData] = useState([]);
+  const [total,setTotal] = useState(0);
   useEffect(() => {
-    setLeadData(leadStoreData);
-  },[leadStoreData]);
+    LeadsData().then((data) => {
+      setLeadData(data.data);
+      setTotal(data.paginate_data.total_rows);
+    });
+  },[leadData]);
   const [showModal , setShowModal] = useState(false);
 
   return (
@@ -53,7 +57,7 @@ const Leads = () => {
               </div>
 
               <div className="mx-5">
-                <h4 className="text-2xl font-semibold text-gray-700">{leadData.length}</h4>
+                <h4 className="text-2xl font-semibold text-gray-700">{total}</h4>
                 <div className="text-gray-500">Total Leads</div>
               </div>
             </div>
@@ -85,9 +89,9 @@ const Leads = () => {
 
               <div className="mx-5">
                 <h4 className="text-2xl font-semibold text-gray-700">
-                  {leadData.filter((lead) => lead.status === "Active").length}
+                  {leadData.filter((lead) => lead.status === "hot").length}
                 </h4>
-                <div className="text-gray-500">Active Leads</div>
+                <div className="text-gray-500">Hot Leads</div>
               </div>
             </div>
           </div>
@@ -117,10 +121,12 @@ const Leads = () => {
               </div>
 
               <div className="mx-5">
-                <h4 className="text-2xl font-semibold text-gray-700">{
-                  leadData.filter((lead) => lead.status === "Pending").length
-                  }</h4>
-                <div className="text-gray-500">Pending Lead</div>
+                <h4 className="text-2xl font-semibold text-gray-700">
+                  {
+                  leadData.filter((lead) => lead.status === "cold").length
+                  }
+                  </h4>
+                <div className="text-gray-500">Cold Lead</div>
               </div>
             </div>
           </div>
@@ -132,7 +138,7 @@ const Leads = () => {
       <div className="flex flex-col mt-8">
         <div className="py-2 -my-2 overflow-x-auto sm:-mx-6 sm:px-6 lg:-mx-8 lg:px-8">
           <div className="inline-block min-w-full overflow-hidden align-middle border-b border-gray-200 shadow sm:rounded-lg">        
-                {(showModal) ?  <EditLead  setShowModal={setShowModal} /> : <LeadRowContainer  setShowModal={setShowModal} />}
+                 <LeadRowContainer  setShowModal={setShowModal} />
           </div>
         </div>
       </div>

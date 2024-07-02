@@ -1,16 +1,18 @@
-import React, { useState } from "react";
-import LeadHead from "./LeadHead";
-import Leads from "./Leads";
-//import Modal from "../../../components/Modal/Modal";
+import React from "react";
 import AddLead from "./ManageLeads/AddLead/AddLead";
+import { Route, Routes } from "react-router-dom";
+import LeadHome from "./LeadHome";
+import EditLead from "./ManageLeads/EditLead/EditLead";
 
 const LeadContainer = () => {
-  const [modalOpen, setModalOpen] = useState(false);
   return (
     <main className="flex-1 overflow-x-hidden overflow-y-auto">
       <div className="container flex flex-col  gap-1 px-6 py-8 mx-auto">
-        <LeadHead setOpenModal={setModalOpen} />
-        {(modalOpen) ? <AddLead setModalOpen={setModalOpen} /> : <Leads />}
+        <Routes>
+          <Route path="/" element={ <LeadHome />} />
+          <Route path="/add" element={<AddLead />} />
+          <Route path="/edit/:id" element={<EditLead />} />
+        </Routes>
       </div>
     </main>
   );
