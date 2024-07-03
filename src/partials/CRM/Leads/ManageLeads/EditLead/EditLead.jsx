@@ -1,6 +1,4 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
-import Cookies from "js-cookie";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { ClipLoader, HashLoader } from "react-spinners";
@@ -8,6 +6,7 @@ import "../main.css";
 import EditLeadData from "./EditLeadData";
 import { useNavigate, useParams } from "react-router-dom";
 import FetchData from "../AddLead/FetchData";
+import GlobalAxios from "../../../../../Global/GlobalAxios";
 
 function EditLead() {
   const [rtoLocations, setRtoLocations] = useState([]);
@@ -48,6 +47,7 @@ function EditLead() {
       }
     };
     fetch();
+    console.log("Edit Lead ID: ", id);
   }, [id]);
 
   useEffect(() => {
@@ -75,21 +75,12 @@ function EditLead() {
     setValidationErrors({});
     console.log(formData);
 
-    let token = Cookies.get("auth_token");
 
     try {
-      const response = await axios.put(
-        `http://192.168.169.246:8000/api/v1/admin/leads/${id}`,
+      const response = await GlobalAxios.put(
+        `/admin/leads/${id}`,
         formData,
-        {
-          headers: {
-            Accept: "application/json",
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-        }
       );
-
       setLoading(false);
       if (response.data.status === "success") {
         toast.success("Lead updated successfully!");
@@ -118,15 +109,6 @@ function EditLead() {
     }
   };
 
-  const scrollToTop = () => {
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  };
-
-  useEffect(() => {
-    if (loading) {
-      scrollToTop();
-    }
-  }, [loading]);
 
   return (
     <div className="flex justify-center items-center min-h-screen bg-gray-100 px-4">

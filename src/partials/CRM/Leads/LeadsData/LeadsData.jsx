@@ -1,11 +1,8 @@
-import React from "react";
-import axios from "axios";
-import Cookies from "js-cookie";
+import GlobalAxios from "../../../../Global/GlobalAxios";
 
 const LeadsData = async (pageNo, rto_location, rto_year, rto_lead_status) => {
-  let token = Cookies.get("auth_token");
 
-  let url = `http://192.168.169.246:8000/api/v1/admin/leads?page=${pageNo}`;
+  let url = `/admin/leads?page=${pageNo}`;
 
   if (rto_location) {
     url += `&rto_location=${rto_location}`;
@@ -20,13 +17,7 @@ const LeadsData = async (pageNo, rto_location, rto_year, rto_lead_status) => {
   }
 
   try {
-    const response = await axios.get(url, {
-      headers: {
-        Accept: "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-    });
-
+    const response = await GlobalAxios.get(url);
     return response.data;
   } catch (error) {
     console.error("Error fetching leads:", error);

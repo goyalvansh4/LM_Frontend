@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import Cookies from "js-cookie";
+import GlobalAxios from "../../../../Global/GlobalAxios";
 
 const FilterComponent = ({
   selectedRto,
@@ -17,23 +18,13 @@ const FilterComponent = ({
   const [statuses, setStatuses] = useState([]);
 
   const [selectedState, setSelectedState] = useState("");
-  //const [selectedRto, setSelectedRto] = useState("");
-  // const [selectedYear, setSelectedYear] = useState("");
-  // const [selectedStatus, setSelectedStatus] = useState("");
 
   // Fetch filter data from API
   useEffect(() => {
     const fetchFilters = async () => {
-      let token = Cookies.get("auth_token");
       try {
-        const response = await axios.get(
-          "http://192.168.169.246:8000/api/v1/admin/leads_filters",
-          {
-            headers: {
-              Accept: "application/json",
-              Authorization: `Bearer ${token}`,
-            },
-          }
+        const response = await GlobalAxios.get(
+          "/admin/leads_filters",
         );
 
         const data = response.data.data;
@@ -56,17 +47,10 @@ const FilterComponent = ({
   // Fetch RTO locations based on the selected state
   useEffect(() => {
     const fetchRtoLocations = async () => {
-      let token = Cookies.get("auth_token");
       if (selectedState) {
         try {
-          const response = await axios.get(
-            `http://192.168.169.246:8000/api/v1/admin/rtolocations/state/${selectedState}`,
-            {
-              headers: {
-                Accept: "application/json",
-                Authorization: `Bearer ${token}`,
-              },
-            }
+          const response = await GlobalAxios.get(
+            `/admin/rtolocations/state/${selectedState}`,
           );
 
           setRtoLocations(response.data.data);

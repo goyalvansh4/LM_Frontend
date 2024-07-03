@@ -12,9 +12,9 @@
     </defs>
     <g transform="rotate(90 16 16)" fill="none" fill-rule="evenodd">
         <mask id="icon2-d" fill="#fff">
-            <use xlink:href="#icon2-a" />
+            <use xlinkHref="#icon2-a" />
         </mask>
-        <use fill="url(#icon2-b)" xlink:href="#icon2-a" />
+        <use fill="url(#icon2-b)" xlinkHref="#icon2-a" />
         <path fill="url(#icon2-c)" mask="url(#icon2-d)" d="M16-6h20v38H16z" />
     </g>
 </svg>

@@ -1,11 +1,10 @@
 import React, { useState } from "react";
-import axios from "axios";
-import Cookies from "js-cookie";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useNavigate } from "react-router-dom";
+import GlobalAxios from "../../../Global/GlobalAxios";
 
-const LeadHead = ({ setOpenModal }) => {
+const LeadHead = () => {
   const [file, setFile] = useState(null);
   const [fileName, setFileName] = useState("");
   const [spinner, setSpinner] = useState(false);
@@ -13,20 +12,14 @@ const LeadHead = ({ setOpenModal }) => {
   const navigate = useNavigate();
 
   const uploadFile = async (file) => {
-    const url = "http://192.168.169.246:8000/api/v1/admin/leads/import_csv";
-    const token = Cookies.get("auth_token");
+    const url = "/admin/leads/import_csv";
 
     // Create a FormData object and append the file
     const formData = new FormData();
     formData.append("file", file);
 
     try {
-      const response = await axios.post(url, formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const response = await GlobalAxios.post(url, formData);
 
       const { status, message, total_successful_row } = response.data;
 
@@ -84,7 +77,7 @@ const LeadHead = ({ setOpenModal }) => {
               htmlFor="file"
               className="btn rounded-md text-white bg-gray-900 px-4 py-2 cursor-pointer"
             >
-              Choose File
+              Import
             </label>
             {fileName && (
               <button

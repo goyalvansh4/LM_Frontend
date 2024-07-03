@@ -1,17 +1,19 @@
 import React, { useEffect, useState } from "react";
 import FetchData from "./FetchData";
-import axios from "axios";
-import Cookies from "js-cookie";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { ClipLoader } from "react-spinners";
 import "../main.css";
+import GlobalAxios from "../../../../../Global/GlobalAxios";
 
 function AddLead({ setModalOpen }) {
+
+
+
   const [rtoLocations, setRtoLocations] = useState([]);
   const [loading, setLoading] = useState(false);
   const [validationErrors, setValidationErrors] = useState({});
-
+  console.log("AddLead");
   useEffect(() => {
     FetchData().then((data) => {
       setRtoLocations(data.data);
@@ -44,23 +46,12 @@ function AddLead({ setModalOpen }) {
     e.preventDefault();
     setLoading(true);
     setValidationErrors({});
-    console.log(formData);
-
-    let token = Cookies.get("auth_token");
 
     try {
-      const response = await axios.post(
-        `http://192.168.169.246:8000/api/v1/admin/leads`,
+      const response = await GlobalAxios.post(
+        `/admin/leads`,
         formData,
-        {
-          headers: {
-            Accept: "application/json",
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-        }
       );
-
       setLoading(false);
       if (response.data.status === "success") {
         toast.success("Lead added successfully!");

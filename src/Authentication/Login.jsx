@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
-import axios from "axios";
 import Cookies from "js-cookie";
+import GlobalAxios from "../Global/GlobalAxios";
 
 const Login = () => {
   const [formData, setFormData] = useState({
@@ -28,17 +28,12 @@ const Login = () => {
     e.preventDefault();
 
     try {
-      const response = await axios.post(
-        "http://192.168.169.246:8000/api/v1/admin/login", // replace with your API endpoint
+      const response = await GlobalAxios.post(
+        "/admin/login", // replace with your API endpoint
         {
           email: formData.email,
           password: formData.password,
         },
-        {
-          headers: {
-            Accept: "application/json",
-          },
-        }
       );
 
       if (response.data.status === "success") {
@@ -83,7 +78,7 @@ const Login = () => {
                 placeholder="Enter Email Address"
                 className="w-full px-4 py-3 rounded-lg bg-gray-200 mt-2 border focus:border-blue-500 focus:bg-white focus:outline-none"
                 autoFocus
-                autoComplete
+                autoComplete="true"
                 required
               />
             </div>
@@ -141,7 +136,7 @@ const Login = () => {
                   />
                 </defs>
                 <clipPath id="b">
-                  <use xlink:href="#a" overflow="visible" />
+                  <use xlinkHref="#a" overflow="visible" />
                 </clipPath>
                 <path clipPath="url(#b)" fill="#FBBC05" d="M0 37V11l17 13z" />
                 <path

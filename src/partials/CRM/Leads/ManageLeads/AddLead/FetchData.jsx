@@ -1,18 +1,9 @@
-import axios from "axios";
-import Cookies from "js-cookie";
+import GlobalAxios from "../../../../../Global/GlobalAxios";
 
 const FetchData = async () => {
-  let token = Cookies.get("auth_token");
+  
   try {
-    const response = await axios.get(
-      `http://192.168.169.246:8000/api/v1/admin/rtolocations`,
-      {
-        headers: {
-          Accept: "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-      }
-    );
+    const response = await GlobalAxios.get(`/admin/rtolocations`);
     console.log(response.data.data);
     return response.data;
   } catch (error) {

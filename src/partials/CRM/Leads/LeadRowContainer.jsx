@@ -5,8 +5,7 @@ import FilterComponent from "./Filters/FilterComponent";
 import { useNavigate } from "react-router-dom";
 import { RiDeleteBinFill } from "react-icons/ri";
 import { toast } from "react-toastify";
-import axios from "axios";
-import Cookies from "js-cookie";
+import GlobalAxios from "../../../Global/GlobalAxios";
 
 const LeadRowContainer = () => {
   const [leadData, setLeadData] = useState([]);
@@ -17,9 +16,7 @@ const LeadRowContainer = () => {
     total_rows: 0,
     total_pages: 0,
   });
-
   const navigate = useNavigate();
-
   const [selectedRto, setSelectedRto] = useState("");
   const [selectedYear, setSelectedYear] = useState("");
   const [selectedStatus, setSelectedStatus] = useState("");
@@ -46,20 +43,12 @@ const LeadRowContainer = () => {
   };
 
   const handleDeleteLead = async (id) => {
-    let token = Cookies.get("auth_token");
 
-    let url = `http://192.168.169.246:8000/api/v1/admin/leads/${id}`;
+    let url = `/admin/leads/${id}`;
     try {
-      const response = await axios.delete(url, {
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      
+      const response = await GlobalAxios.delete(url);
+
       if (response.data.status === "success") {
-        //setLoading(true); // Start loading
         toast.success("Lead Deleted Successfully");
         LeadsData(currentPage).then((data) => {
           setLeadData(data.data);

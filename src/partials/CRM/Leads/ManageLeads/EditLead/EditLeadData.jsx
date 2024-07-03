@@ -1,20 +1,9 @@
-import React from "react";
-import axios from "axios";
-import Cookies from "js-cookie";
+import GlobalAxios from "../../../../../Global/GlobalAxios";
 
 const EditLeadData = async (id) => {
-  let token = Cookies.get("auth_token");
-
-  let url = `http://192.168.169.246:8000/api/v1/admin/leads/${id}`;
-
+  let url = `/admin/leads/${id}`;
   try {
-    const response = await axios.get(url, {
-      headers: {
-        Accept: "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-    });
-
+    const response = await GlobalAxios.get(url);
     return response.data;
   } catch (error) {
     console.error("Error fetching leads:", error);
