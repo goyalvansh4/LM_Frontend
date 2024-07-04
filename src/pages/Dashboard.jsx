@@ -24,7 +24,7 @@ function Dashboard() {
           <Routes>
             <Route path="/" element={<Card />} />
             <Route exact path="/leads/*" element={<LeadContainer />} />
-            <Route path="/users" element={<UserContainer />} />
+            <Route path="/users/*" element={<UserContainer />} />
           </Routes>
         </main>
       </div>

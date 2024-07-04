@@ -1,96 +1,171 @@
 import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { setUserId } from "../../../redux/store/UserStore/SetUserSlice";
-import { deleteUser } from "../../../redux/store/UserStore/UserSlice";
+import { useNavigate } from "react-router-dom";
+import FetchUserData from "./FetchUserData/FetchUserData";
+import moment from "moment";
+import { RiDeleteBinFill } from "react-icons/ri";
+import GlobalAxios from "../../../Global/GlobalAxios";
+import { toast } from "react-toastify";
 
+const UserRowContainer = () => {
+  const [users, setUsers] = useState([]);
+  const [userId, setUserId] = useState(null);
 
-const UserRowContainer = ({setShowModal}) => {
-  const userStoreData = useSelector((state) => state.userStore);
-  const [userData,setUserData]=useState(userStoreData);
-  const dispatch = useDispatch();
-  const handleEditClick = (userId) => {
-    const editUser = userData.filter((user) => user.id === userId);
-    console.log(userId);
-    dispatch(setUserId(editUser[0]));
-    setShowModal(true);
-    setUserData(userStoreData);
+  useEffect(() => {
+    FetchUserData().then((data) => {
+      setUsers(data.data);
+    });
+  }, []);
+
+  const navigate = useNavigate();
+
+  const handleEditClick = (id) => {
+    navigate(`/admin/users/edit/${id}`);
   };
 
-  const handleDeleteUser = (userId) => {
-    dispatch(deleteUser(userId));
-    setUserData(userStoreData);
+  const handleUserModal = (id) => {
+    // Add your delete logic here
+    //setDeleteLeadId(id);
+    setUserId(id);
+    document.getElementById("my_modal_7").showModal();
+    console.log("Delete user with ID:", id);
+  };
+
+  const handleDeleteUser = async(id) => {
+     try {
+       const response = await GlobalAxios.delete(`/admin/users/${id}`);
+        if (response.data.status === "success") {
+          document.getElementById("my_modal_7").close();
+          toast.success("User deleted successfully!");
+          FetchUserData().then((data) => {
+            setUsers(data.data);
+          });
+        }
+     } catch (error) {
+        console.error(error);
+        toast.error("Failed to delete user!");
+     }
   }
+
   return (
-    <>
-    <table className="min-w-full">
-      <thead>
-        <tr>
-          <th className="px-6 py-3 text-xs font-medium leading-4 tracking-wider text-left text-gray-500 uppercase border-b border-gray-200 bg-gray-50">
-            Name
-          </th>
-          <th className="px-6 py-3 text-xs font-medium leading-4 tracking-wider text-left text-gray-500 uppercase border-b border-gray-200 bg-gray-50">
-             UserName
-          </th>
-          <th className="px-6 py-3 text-xs font-medium leading-4 tracking-wider text-left text-gray-500 uppercase border-b border-gray-200 bg-gray-50">
-            Email
-          </th>
-          <th className="px-6 py-3 text-xs font-medium leading-4 tracking-wider text-left text-gray-500 uppercase border-b border-gray-200 bg-gray-50">
-            PhoneNo
-          </th>
-          <th className="px-2 py-3 text-xs font-medium leading-4 tracking-wider text-center text-gray-500 uppercase border-b border-gray-200 bg-gray-50">
-            Manage
-          </th>
-        </tr>
-      </thead>
-      <tbody className="bg-white">
-      {userStoreData.map((user) => (
-        <tr key={user.id}>
-          <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
-            <div className="flex items-center">
-              <div className="ml-4">
-                <div className="text-sm font-medium leading-5 text-gray-900">
-                  {user.name}
+    <div className="flex justify-center bg-gray-100 dark:bg-gray-900">
+      <table className="min-w-full bg-white dark:bg-gray-800 shadow-lg rounded-lg overflow-hidden">
+        <thead className="bg-gradient-to-r from-gray-800 to-gray-600 dark:from-gray-700 dark:to-gray-600 text-white">
+          <tr>
+            <th className="px-6 py-3 text-xs font-medium tracking-wider text-left uppercase border-b border-gray-200 dark:border-gray-700">
+              S.No
+            </th>
+            <th className="px-6 py-3 text-xs font-medium tracking-wider text-left uppercase border-b border-gray-200 dark:border-gray-700">
+              Name
+            </th>
+            <th className="px-6 py-3 text-xs font-medium tracking-wider text-left uppercase border-b border-gray-200 dark:border-gray-700">
+              Email
+            </th>
+            <th className="px-6 py-3 text-xs font-medium tracking-wider text-left uppercase border-b border-gray-200 dark:border-gray-700">
+              Phone No
+            </th>
+            <th className="px-6 py-3 text-xs font-medium tracking-wider text-left uppercase border-b border-gray-200 dark:border-gray-700">
+              Assign Lead
+            </th>   
+            <th className="px-6 py-3 text-xs font-medium tracking-wider text-left uppercase border-b border-gray-200 dark:border-gray-700">
+              Created On
+            </th>
+            <th className="px-6 py-3 text-xs font-medium tracking-wider text-left uppercase border-b border-gray-200 dark:border-gray-700">
+              Status
+            </th>
+            <th className="px-6 py-3 text-xs font-medium tracking-wider text-center uppercase border-b border-gray-200 dark:border-gray-700">
+              Manage
+            </th>
+          </tr>
+        </thead>
+        <tbody className="bg-white dark:bg-gray-900">
+          {users.map((user, index) => {
+            return <tr
+              key={user.id}
+              className="hover:bg-gray-100 dark:hover:bg-gray-700 transition duration-200 ease-in-out"
+            >
+              <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200 dark:border-gray-700">
+                <div className="flex items-center">
+                  <div className="text-sm font-medium leading-5 text-gray-900 dark:text-gray-100">
+                    {(index)+1}
+                  </div>
                 </div>
+              </td>
+              <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200 dark:border-gray-700">
+                <div className="flex items-center">
+                  <div className="text-sm font-medium leading-5 text-gray-900 dark:text-gray-100">
+                    {user.name}
+                  </div>
+                </div>
+              </td>
+              <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200 dark:border-gray-700">
+                <div className="flex items-center">
+                  <div className="text-sm font-medium leading-5 text-gray-900 dark:text-gray-100">
+                    {user.email}
+                  </div>
+                </div>
+              </td>
+              <td className="px-6 py-4 text-sm leading-5 text-gray-500 whitespace-no-wrap border-b border-gray-200 dark:text-gray-400 dark:border-gray-700">
+                {user.mobile}
+              </td>
+              <td className="px-6 py-4 text-sm leading-5 text-gray-500 whitespace-no-wrap border-b border-gray-200 dark:text-gray-400 dark:border-gray-700">
+                {/* {user.assignLead} */}
+                0
+              </td>
+              <td className="px-6 py-4 text-sm leading-5 text-gray-500 whitespace-no-wrap border-b border-gray-200 dark:text-gray-400 dark:border-gray-700">
+                {moment(user.createdAt).format('D - MMMM - YYYY')}
+              </td>
+              <td className="px-6 py-4 text-sm leading-5 text-gray-500 whitespace-no-wrap border-b border-gray-200 dark:text-gray-400 dark:border-gray-700">
+                {user.status}
+              </td>
+              <td className="px-6 py-4 text-sm flex flex-col gap-2 font-medium leading-5 text-right whitespace-no-wrap border-b border-gray-200 dark:border-gray-700">
+                <button
+                  onClick={() => handleEditClick(user.id)}
+                  className="text-indigo-600 hover:text-indigo-900 dark:text-indigo-400 dark:hover:text-indigo-300 transition duration-200 ease-in-out transform hover:scale-105"
+                >
+                  Edit
+                </button>
+                <button
+                  onClick={() => handleUserModal(user.id)}
+                  className="text-red-600 hover:text-red-900 dark:text-red-400 dark:hover:text-red-300 transition duration-200 ease-in-out transform hover:scale-105"
+                >
+                  Delete
+                </button>
+              </td>
+            </tr>;
+          })}
+        </tbody>
+      </table>
+      <dialog
+            id="my_modal_7"
+            className="modal modal-bottom sm:modal-middle rounded-3xl"
+          >
+            <div className="modal-box py-12 flex flex-col gap-4 justify-center  px-8 dark:bg-gray-800 dark:text-gray-200">
+              <h3 className="font-bold flex justify-center">
+                <RiDeleteBinFill className="text-red-400 text-6xl text-center" />
+              </h3>
+              <p className="text-center">Are you sure</p>
+              <p className="text-center">
+                Do you really want to delete this user?
+              </p>
+              <div className="modal-action">
+                <form
+                  method="dialog"
+                  className="flex justify-center gap-4 items-center"
+                >
+                  <button className="px-4 py-2 bg-white text-black rounded-xl border-2 dark:bg-gray-700 dark:text-gray-300">
+                    Close
+                  </button>
+                  <button
+                    onClick={() => handleDeleteUser(userId)}
+                    className="px-4 py-2 bg-red-500 text-white rounded-xl border-2"
+                  >
+                    Delete
+                  </button>
+                </form>
               </div>
             </div>
-          </td>
-          <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
-          <div className="flex items-center">
-              <div className="ml-4">
-                <div className="text-sm font-medium leading-5 text-gray-900">
-                  {user.username}
-                </div>
-              </div>
-            </div>
-          </td>
-
-          <td className=" text-xl px-6 py-4 whitespace-no-wrap border-b border-gray-200">
-          <div className="flex items-center">
-              <div className="ml-4">
-                <div className="text-sm font-medium leading-5 text-gray-900">
-                  {user.email}
-                </div>
-              </div>
-            </div>
-          </td>
-
-          <td className="px-6 py-4 text-sm leading-5 text-gray-500 whitespace-no-wrap border-b border-gray-200">
-            {user.phone}
-          </td>
-
-          <td className="px-6 py-4 text-sm flex flex-col gap-2 font-medium leading-5 text-right whitespace-no-wrap border-b border-gray-200">
-            <button onClick={() => handleEditClick(user.id)}  className="text-indigo-600 hover:text-indigo-900">
-              Edit
-            </button>
-            <button onClick={() => handleDeleteUser(user.id)}    className="text-red-600 hover:text-red-900">
-              Delete
-            </button>
-          </td>
-        </tr>
-      ))}
-      </tbody>
-    </table>
-    </>
+          </dialog>
+    </div>
   );
 };
 

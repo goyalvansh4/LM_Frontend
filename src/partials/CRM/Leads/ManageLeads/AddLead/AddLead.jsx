@@ -5,18 +5,33 @@ import "react-toastify/dist/ReactToastify.css";
 import { ClipLoader } from "react-spinners";
 import "../main.css";
 import GlobalAxios from "../../../../../Global/GlobalAxios";
+import { Navigate } from "react-router-dom";
 
-function AddLead({ setModalOpen }) {
-
-
-
+function AddLead() {
   const [rtoLocations, setRtoLocations] = useState([]);
   const [loading, setLoading] = useState(false);
   const [validationErrors, setValidationErrors] = useState({});
-  console.log("AddLead");
+  const [rtostate, setRto_state] = useState([]);
+  const [status, setStatus] = useState([]);
+  const navigate = Navigate;
+
   useEffect(() => {
     FetchData().then((data) => {
       setRtoLocations(data.data);
+    });
+  }, []);
+
+  useEffect(() => {
+    const response = GlobalAxios.get("/admin/state");
+    response.then((data) => {
+      setRto_state(data.data.states);
+    });
+  }, []);
+
+  useEffect(() => {
+    const response = GlobalAxios.get("/admin/leadstatus");
+    response.then((data) => {
+      setStatus(data.data.data);
     });
   }, []);
 
@@ -48,10 +63,7 @@ function AddLead({ setModalOpen }) {
     setValidationErrors({});
 
     try {
-      const response = await GlobalAxios.post(
-        `/admin/leads`,
-        formData,
-      );
+      const response = await GlobalAxios.post("/admin/leads", formData);
       setLoading(false);
       if (response.data.status === "success") {
         toast.success("Lead added successfully!");
@@ -65,8 +77,8 @@ function AddLead({ setModalOpen }) {
           status: null,
         });
         setTimeout(() => {
-          setModalOpen(false);
-        }, 2000);
+          navigate("/admin/leads");
+        }, 3000);
       } else {
         toast.error(response.data.message);
         if (
@@ -89,17 +101,25 @@ function AddLead({ setModalOpen }) {
     }
   };
 
+  const handleStateChange = (e) => {
+    const { value } = e.target;
+    const response = GlobalAxios.get(`/admin/rtolocations/state/${value}`);
+    response.then((data) => {
+      setRtoLocations(data.data.data);
+    });
+  };
+
   return (
-    <div className="flex justify-center items-center min-h-screen bg-gray-100 px-4">
+    <div className="flex justify-center items-center  bg-gray-100 dark:bg-gray-900 px-4 transition-colors duration-300">
       <ToastContainer />
-      <div className="w-full max-w-6xl bg-white shadow-lg rounded-lg p-8">
-        <h2 className="text-2xl font-semibold mb-8 text-gray-800">
+      <div className="w-full max-w-6xl bg-white dark:bg-gray-800 shadow-lg rounded-lg p-8 transition-colors duration-300">
+        <h2 className="text-2xl font-semibold mb-8 text-gray-800 dark:text-gray-200">
           Add New Lead
         </h2>
         <form onSubmit={handleSubmit}>
           <div className="grid grid-cols-2 gap-4">
             <div className="col-span-1 mb-4">
-              <label className="block text-gray-700 font-medium mb-2">
+              <label className="block text-gray-700 dark:text-gray-300 font-medium mb-2">
                 Registration No:
               </label>
               <input
@@ -108,7 +128,7 @@ function AddLead({ setModalOpen }) {
                 value={formData.register_number}
                 onChange={handleChange}
                 required
-                className="w-full border-gray-300 rounded-md shadow-sm p-2 focus:border-indigo-500 focus:ring-indigo-500"
+                className="w-full border-gray-300 dark:border-gray-700 dark:bg-gray-700 dark:text-gray-200 rounded-md shadow-sm p-2 focus:border-indigo-500 focus:ring-indigo-500"
                 placeholder="Enter Registration No"
               />
               {validationErrors.register_number && (
@@ -118,7 +138,25 @@ function AddLead({ setModalOpen }) {
               )}
             </div>
             <div className="col-span-1 mb-4">
-              <label className="block text-gray-700 font-medium mb-2">
+              <label className="block text-gray-700 dark:text-gray-300 font-medium mb-2">
+                Select RTO State:
+              </label>
+              <select
+                name="rto_state"
+                onChange={handleStateChange}
+                required
+                className="w-full border-gray-300 dark:border-gray-700 dark:bg-gray-700 dark:text-gray-200 rounded-md shadow-sm p-2 focus:border-indigo-500 focus:ring-indigo-500"
+              >
+                <option value="">Select State</option>
+                {rtostate.map((state) => (
+                  <option key={state.id} value={state.id}>
+                    {state.name}
+                  </option>
+                ))}
+              </select>
+            </div>
+            <div className="col-span-1 mb-4">
+              <label className="block text-gray-700 dark:text-gray-300 font-medium mb-2">
                 RTO Location:
               </label>
               <select
@@ -126,7 +164,7 @@ function AddLead({ setModalOpen }) {
                 value={formData.rto_location || ""}
                 onChange={handleChange}
                 required
-                className="w-full border-gray-300 rounded-md shadow-sm p-2 focus:border-indigo-500 focus:ring-indigo-500"
+                className="w-full border-gray-300 dark:border-gray-700 dark:bg-gray-700 dark:text-gray-200 rounded-md shadow-sm p-2 focus:border-indigo-500 focus:ring-indigo-500"
               >
                 <option value="">Select RTO Location</option>
                 {rtoLocations.map((location) => (
@@ -142,7 +180,7 @@ function AddLead({ setModalOpen }) {
               )}
             </div>
             <div className="col-span-1 mb-4">
-              <label className="block text-gray-700 font-medium mb-2">
+              <label className="block text-gray-700 dark:text-gray-300 font-medium mb-2">
                 Registration Date:
               </label>
               <input
@@ -151,7 +189,7 @@ function AddLead({ setModalOpen }) {
                 value={formData.register_date}
                 onChange={handleChange}
                 required
-                className="w-full border-gray-300 rounded-md shadow-sm p-2 focus:border-indigo-500 focus:ring-indigo-500"
+                className="w-full border-gray-300 dark:border-gray-700 dark:bg-gray-700 dark:text-gray-200 rounded-md shadow-sm p-2 focus:border-indigo-500 focus:ring-indigo-500"
               />
               {validationErrors.register_date && (
                 <p className="text-red-600 text-sm">
@@ -160,7 +198,7 @@ function AddLead({ setModalOpen }) {
               )}
             </div>
             <div className="col-span-1 mb-4">
-              <label className="block text-gray-700 font-medium mb-2">
+              <label className="block text-gray-700 dark:text-gray-300 font-medium mb-2">
                 Customer Name:
               </label>
               <input
@@ -169,7 +207,7 @@ function AddLead({ setModalOpen }) {
                 value={formData.customer_name}
                 onChange={handleChange}
                 required
-                className="w-full border-gray-300 rounded-md shadow-sm p-2 focus:border-indigo-500 focus:ring-indigo-500"
+                className="w-full border-gray-300 dark:border-gray-700 dark:bg-gray-700 dark:text-gray-200 rounded-md shadow-sm p-2 focus:border-indigo-500 focus:ring-indigo-500"
                 placeholder="Enter Customer Name"
               />
               {validationErrors.customer_name && (
@@ -179,7 +217,7 @@ function AddLead({ setModalOpen }) {
               )}
             </div>
             <div className="col-span-1 mb-4">
-              <label className="block text-gray-700 font-medium mb-2">
+              <label className="block text-gray-700 dark:text-gray-300 font-medium mb-2">
                 Phone No:
               </label>
               <input
@@ -188,7 +226,7 @@ function AddLead({ setModalOpen }) {
                 value={formData.customer_mobile}
                 onChange={handleChange}
                 required
-                className="w-full border-gray-300 rounded-md shadow-sm p-2 focus:border-indigo-500 focus:ring-indigo-500"
+                className="w-full border-gray-300 dark:border-gray-700 dark:bg-gray-700 dark:text-gray-200 rounded-md shadow-sm p-2 focus:border-indigo-500 focus:ring-indigo-500"
                 placeholder="Enter Phone No"
               />
               {validationErrors.customer_mobile && (
@@ -198,8 +236,8 @@ function AddLead({ setModalOpen }) {
               )}
             </div>
             <div className="col-span-1 mb-4">
-              <label className="block text-gray-700 font-medium mb-2">
-                Address:
+              <label className="block text-gray-700 dark:text-gray-300 font-medium mb-2">
+                Customer Address:
               </label>
               <input
                 type="text"
@@ -207,7 +245,7 @@ function AddLead({ setModalOpen }) {
                 value={formData.address}
                 onChange={handleChange}
                 required
-                className="w-full border-gray-300 rounded-md shadow-sm p-2 focus:border-indigo-500 focus:ring-indigo-500"
+                className="w-full border-gray-300 dark:border-gray-700 dark:bg-gray-700 dark:text-gray-200 rounded-md shadow-sm p-2 focus:border-indigo-500 focus:ring-indigo-500"
                 placeholder="Enter Address"
               />
               {validationErrors.address && (
@@ -217,7 +255,7 @@ function AddLead({ setModalOpen }) {
               )}
             </div>
             <div className="col-span-1 mb-4">
-              <label className="block text-gray-700 font-medium mb-2">
+              <label className="block text-gray-700 dark:text-gray-300 font-medium mb-2">
                 Status:
               </label>
               <select
@@ -225,12 +263,14 @@ function AddLead({ setModalOpen }) {
                 value={formData.status || ""}
                 onChange={handleChange}
                 required
-                className="w-full border-gray-300 rounded-md shadow-sm p-2 focus:border-indigo-500 focus:ring-indigo-500"
+                className="w-full border-gray-300 dark:border-gray-700 dark:bg-gray-700 dark:text-gray-200 rounded-md shadow-sm p-2 focus:border-indigo-500 focus:ring-indigo-500"
               >
                 <option value="">Select Status</option>
-                <option value="1">Hot</option>
-                <option value="2">Warm</option>
-                <option value="3">Cold</option>
+                {status.map((status) => (
+                  <option key={status.id} value={status.id}>
+                    {status.name}
+                  </option>
+                ))}
               </select>
               {validationErrors.status && (
                 <p className="text-red-600 text-sm">
@@ -242,7 +282,7 @@ function AddLead({ setModalOpen }) {
           <div className="flex justify-center mt-8">
             <button
               type="submit"
-              className="py-3 px-6 text-white bg-gray-900 hover:bg-gray-800 text-lg rounded-lg font-semibold shadow-md"
+              className="py-3 px-6 text-white bg-gray-900 dark:bg-gray-700 hover:bg-gray-800 dark:hover:bg-gray-600 text-lg rounded-lg font-semibold shadow-md transition-colors duration-300"
               disabled={loading}
             >
               {loading ? <ClipLoader size={20} color={"#FFF"} /> : "Add Lead"}

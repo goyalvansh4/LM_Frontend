@@ -2,21 +2,25 @@ import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import UserRowContainer from "./UserRowContainer";
 import EditUser from "./ManageUsers/EditUserData/EditUser";
+import FetchUserData from "./FetchUserData/FetchUserData";
 
 const Users = () => {
-  const userStoreData = useSelector((state) => state.userStore);
-  const leadStoreData = useSelector((state) => state.leadStore);
-  const [userData, setUserData] = useState(userStoreData);
+  
+  const [userData, setUserData] = useState([]);
   useEffect(() => {
-    setUserData(userStoreData);
-  }, [userStoreData])
-  const [showModal , setShowModal] = useState(false);
+    FetchUserData().then((data) => {
+      console.log("Users",data);
+      setUserData(data);
+    });
+  }, []);
+
+
   return (
     <>
       <div className="mt-4">
         <div className="flex flex-wrap -mx-6">
           <div className="w-full px-6 sm:w-1/2 xl:w-1/3">
-            <div className="flex items-center px-5 py-6 bg-white rounded-md shadow-sm">
+            <div className="flex items-center px-5 py-6 bg-white dark:bg-gray-800 rounded-md  dark:shadow-neon-green ring-1 ring-gray-200 dark:ring-gray-700 ring-opacity-10 dark:ring-opacity-20 transition-shadow duration-300 ease-in-out hover:shadow-neon-green-hover shadow-sm shadow-gray-200">
               <div className="p-3 bg-green-600 bg-opacity-75 rounded-full">
                 <svg
                   className="w-8 h-8 text-white"
@@ -52,15 +56,16 @@ const Users = () => {
               </div>
 
               <div className="mx-5">
-                <h4 className="text-2xl font-semibold text-gray-700">{
-                 userData.length }</h4>
-                <div className="text-gray-500">Total Users</div>
+                <h4 className="text-2xl font-semibold text-gray-700 dark:text-gray-100">
+                  {userData.total_user}
+                </h4>
+                <div className="text-gray-500 dark:text-gray-400">Total Users</div>
               </div>
             </div>
           </div>
 
           <div className="w-full px-6 mt-6 sm:w-1/2 xl:w-1/3 sm:mt-0">
-            <div className="flex items-center px-5 py-6 bg-white rounded-md shadow-sm">
+            <div className="flex items-center px-5 py-6 bg-white dark:bg-gray-800 rounded-md shadow-sm dark:shadow-neon-red ring-1 ring-gray-200 dark:ring-gray-700 ring-opacity-10 dark:ring-opacity-20 transition-shadow shadow-gray-200 duration-300 ease-in-out hover:shadow-neon-red-hover">
               <div className="p-3 bg-red-600 bg-opacity-75 rounded-full">
                 <svg
                   className="w-8 h-8 text-white"
@@ -84,16 +89,16 @@ const Users = () => {
               </div>
 
               <div className="mx-5">
-                <h4 className="text-2xl font-semibold text-gray-700">
-                  {leadStoreData.length}
+                <h4 className="text-2xl font-semibold text-gray-700 dark:text-gray-100">
+                  {userData.active_user}
                 </h4>
-                <div className="text-gray-500">Lead Assign</div>
+                <div className="text-gray-500 dark:text-gray-400">Active User</div>
               </div>
             </div>
           </div>
 
           <div className="w-full px-6 mt-6 sm:w-1/2 xl:w-1/3 xl:mt-0">
-            <div className="flex items-center px-5 py-6 bg-white rounded-md shadow-sm">
+            <div className="flex items-center px-5 py-6 bg-white dark:bg-gray-800 rounded-md shadow-sm dark:shadow-neon-blue ring-1 ring-gray-200 dark:ring-gray-700 ring-opacity-10 dark:ring-opacity-20 transition-shadow shadow-gray-200 duration-300 ease-in-out hover:shadow-neon-blue-hover">
               <div className="p-3 bg-blue-600 bg-opacity-75 rounded-full">
                 <svg
                   className="w-8 h-8 text-white"
@@ -116,8 +121,10 @@ const Users = () => {
                 </svg>
               </div>
               <div className="mx-5">
-                <h4 className="text-2xl font-semibold text-gray-700">{userStoreData.length}</h4>
-                <div className="text-gray-500">Available Users</div>
+                <h4 className="text-2xl font-semibold text-gray-700 dark:text-gray-100">
+                  {userData.deactive_user}
+                </h4>
+                <div className="text-gray-500 dark:text-gray-400">Not Active Users</div>
               </div>
             </div>
           </div>
@@ -128,8 +135,9 @@ const Users = () => {
 
       <div className="flex flex-col mt-8">
         <div className="py-2 -my-2 overflow-x-auto sm:-mx-6 sm:px-6 lg:-mx-8 lg:px-8">
-          <div className="inline-block min-w-full overflow-hidden align-middle border-b border-gray-200 shadow sm:rounded-lg">
-          {(showModal) ?  <EditUser setShowModal={setShowModal} /> : <UserRowContainer  setShowModal={setShowModal} />}
+          <div className="inline-block min-w-full overflow-hidden align-middle border-b border-gray-200 dark:border-gray-700 shadow-lg dark:shadow-neon-gray sm:rounded-lg transition-shadow duration-300 ease-in-out hover:shadow-neon-gray-hover">
+            
+              <UserRowContainer />
           </div>
         </div>
       </div>

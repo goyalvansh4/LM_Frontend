@@ -3,6 +3,7 @@ import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useNavigate } from "react-router-dom";
 import GlobalAxios from "../../../Global/GlobalAxios";
+import { FaFileUpload } from "react-icons/fa";
 
 const LeadHead = () => {
   const [file, setFile] = useState(null);
@@ -14,7 +15,6 @@ const LeadHead = () => {
   const uploadFile = async (file) => {
     const url = "/admin/leads/import_csv";
 
-    // Create a FormData object and append the file
     const formData = new FormData();
     formData.append("file", file);
 
@@ -60,40 +60,107 @@ const LeadHead = () => {
     }
   };
 
+  const closeModal = () => {
+    document.getElementById("file_upload_modal").close();
+    setFileName("");
+    setFile(null);
+    document.getElementById("file").value = null;
+  };
+
   return (
     <>
       <div className="w-full lead_head flex items-center justify-between ">
-        <h3 className="text-3xl font-medium text-gray-700">Leads</h3>
+        <h3 className="text-3xl font-medium text-gray-700 dark:text-white">Leads</h3>
         <div className="flex justify-end gap-5 ">
-          <form onSubmit={handleUpload} className="flex items-center gap-5">
-            <input
-              type="file"
-              name="file"
-              id="file"
-              className="hidden"
-              onChange={handleFileChange}
-            />
-            <label
-              htmlFor="file"
-              className="btn rounded-md text-white bg-gray-900 px-4 py-2 cursor-pointer"
-            >
-              Import
-            </label>
-            {fileName && (
-              <button
-                type="submit"
-                className="btn rounded-md text-white bg-gray-900 px-4 py-2 mt-2"
-              >
-                Upload
-              </button>
-            )}
-            {spinner && <p>Uploading File Please Wait...</p>}
-          </form>
+          <button
+            className="btn rounded-md text-white bg-gray-900 px-4 py-2 cursor-pointer dark:text-black dark:bg-white"
+            onClick={() => {
+              document.getElementById("file_upload_modal").showModal();
+            }}
+          >
+            Import
+          </button>
+          <dialog
+            id="file_upload_modal"
+            className="modal w-3/4 py-10 modal-bottom sm:modal-middle rounded-3xl mx-auto dark:bg-gray-800"
+          >
+            <div className="modal-box py-12 flex flex-col gap-8 justify-center px-8">
+              <div className="flex gap-4 items-center">
+              <FaFileUpload className="font-bold text-3xl text-blue-600"/>
+              <h3 className="font-bold text-lg">Upload File</h3>
+              </div>
+              <p className="text-sm">Data that we expect:</p>
+              <p className="font-bold">Format of CSV File</p>
+              <table className="w-full border-2 border-gray-500">
+                <thead className="bg-gray-50">
+                  <tr className="flex justify-between gap-4 px-4">
+                    <th className="py-3 text-xs font-medium leading-4 text-gray-500">
+                      S.No
+                    </th>
+                    <th className="py-3 text-xs font-medium leading-4 text-gray-500">
+                      Registration No
+                    </th>
+                    <th className="py-3 text-xs font-medium leading-4 text-gray-500">
+                      RTO Location
+                    </th>
+                    <th className="py-3 text-xs font-medium leading-4 text-gray-500">
+                      Registration Date
+                    </th>
+                    <th className="py-3 text-xs font-medium leading-4 text-gray-500">
+                      Customer Name
+                    </th>
+                    <th className="py-3 text-xs font-medium leading-4 text-gray-500">
+                      Phone No
+                    </th>
+                    <th className="py-3 text-xs font-medium leading-4 text-gray-500">
+                      Address
+                    </th>
+                    <th className="py-3 text-xs font-medium leading-4 text-gray-500">
+                      Status
+                    </th>
+                    <th className="py-3 text-xs font-medium leading-4 text-gray-500">
+                      Action
+                    </th>
+                  </tr>
+                </thead>
+              </table>
+              <div className="modal-action flex flex-col gap-4 items-center w-full">
+                <input
+                  type="file"
+                  name="file"
+                  id="file"
+                  className="w-full p-2 border-2 border-dashed border-gray-300 rounded-lg"
+                  onChange={handleFileChange}
+                />
+                {fileName && (
+                  <button
+                    type="submit"
+                    className="w-full px-4 py-2 bg-blue-500 text-white rounded-md"
+                    onClick={handleUpload}
+                  >
+                    Upload
+                  </button>
+                )}
+                <button
+                  className="w-full px-4 py-2 bg-white text-black rounded-md border-2"
+                  onClick={closeModal}
+                >
+                  Close
+                </button>
+              </div>
+              {spinner && (
+                <div className="flex justify-center mt-4">
+                  <p>Uploading File, Please Wait...</p>
+                </div>
+              )}
+            </div>
+          </dialog>
           <button
             onClick={() => {
               navigate("/admin/leads/add");
             }}
-            className="btn rounded-md text-white bg-gray-900 px-4 py-2"
+            className="btn rounded-md text-white bg-gray-900 px-4 py-2
+            dark:text-black dark:bg-white"
           >
             Add Leads
           </button>
