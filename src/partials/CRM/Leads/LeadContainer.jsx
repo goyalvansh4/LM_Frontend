@@ -3,6 +3,7 @@ import AddLead from "./ManageLeads/AddLead/AddLead";
 import { Route, Routes } from "react-router-dom";
 import LeadHome from "./LeadHome";
 import EditLead from "./ManageLeads/EditLead/EditLead";
+import ShowDetails from "./ManageLeads/ShowDetails/ShowDetails";
 
 const LeadContainer = () => {
   return (
@@ -12,6 +13,7 @@ const LeadContainer = () => {
           <Route path="/" element={ <LeadHome />} />
           <Route path="/add" element={<AddLead />} />
           <Route path="/edit/:id" element={<EditLead />} />
+          <Route path="/showDetails/:id" element={<ShowDetails/>} />
         </Routes>
       </div>
     </main>

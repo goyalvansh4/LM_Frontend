@@ -92,7 +92,7 @@ const Leads = () => {
             const IconComponent = icons[index%3].component;
             return (
               
-              <div className="w-full px-4 my-2 sm:w-1/4 xl:w-1/4">
+              <div key={lead.id} className="w-full px-4 my-2 sm:w-1/4 xl:w-1/4">
                 <div className="flex items-center px-5 py-6 bg-white rounded-md shadow-xl shadow-slate-200">
                   <div
                     

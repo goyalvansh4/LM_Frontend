@@ -6,6 +6,7 @@ import "../main.css";
 import EditLeadData from "./EditLeadData";
 import { useNavigate, useParams } from "react-router-dom";
 import GlobalAxios from "../../../../../Global/GlobalAxios";
+import BackButton from "../../../../../components/Button/BackButton";
 
 function EditLead() {
   const [rtoLocations, setRtoLocations] = useState([]);
@@ -16,6 +17,8 @@ function EditLead() {
   let { id } = useParams();
   const [rto_state, setRto_state] = useState([]);
   const [selectedrtostate, setSelectedRtoState] = useState(null);
+  const [usersList, setUsersList] = useState([]);
+  const [status, setStatus] = useState([]);
 
   const [formData, setFormData] = useState({
     register_number: "",
@@ -25,6 +28,8 @@ function EditLead() {
     customer_mobile: "",
     address: "",
     status: null,
+    assign_to: null,
+    assign_to_name: "",
   });
 
   useEffect(() => {
@@ -42,6 +47,8 @@ function EditLead() {
           customer_mobile: leadData.customer_mobile || "",
           address: leadData.address || "",
           status: leadData.status || null,
+          assign_to: leadData.assign_to || null,
+          assign_to_name: leadData.assign_to_name || null,
         });
 
         // Fetch RTO locations for the lead's state
@@ -65,6 +72,23 @@ function EditLead() {
       console.log("State", data.data.states);
       setRto_state(data.data.states);
     });
+  }, []);
+
+  useEffect(() => {
+    const response = GlobalAxios.get("/admin/leadstatus");
+    response.then((data) => {
+      setStatus(data.data.data);
+    });
+  }, []);
+
+  useEffect(() => {
+    const fetchUsers = async () => {
+      const response = await GlobalAxios.get("/admin/usersforlead");
+      console.log("Users", response.data.data);
+      setUsersList(response.data.data);
+    };
+
+    fetchUsers();
   }, []);
 
   const handleChange = (e) => {
@@ -135,7 +159,9 @@ function EditLead() {
     <div className="flex justify-center items-center  bg-gray-100 dark:bg-gray-900 px-4">
       <ToastContainer />
       <div className="w-full max-w-6xl bg-white dark:bg-gray-800 shadow-lg rounded-lg p-8">
-        <h2 className="text-2xl font-semibold mb-8 text-gray-800 dark:text-gray-100">Edit Lead</h2>
+        <h2 className="text-2xl font-semibold mb-8 text-gray-800 dark:text-gray-100">
+          Edit Lead
+        </h2>
         {loadingData ? (
           <div className="flex justify-center items-center min-h-screen">
             <HashLoader size={50} color={"#4A90E2"} />
@@ -247,7 +273,7 @@ function EditLead() {
                   Phone No:
                 </label>
                 <input
-                  type="text"
+                  type="tel"
                   name="customer_mobile"
                   value={formData.customer_mobile}
                   onChange={handleChange}
@@ -292,9 +318,11 @@ function EditLead() {
                   className="w-full border-gray-300 dark:border-gray-600 rounded-md shadow-sm p-2 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-200 focus:border-indigo-500 focus:ring-indigo-500"
                 >
                   <option value="">Select Status</option>
-                  <option value="1">Hot</option>
-                  <option value="2">Warm</option>
-                  <option value="3">Cold</option>
+                  {status.map((status) => (
+                    <option key={status.id} value={status.id}>
+                      {status.name}
+                    </option>
+                  ))}
                 </select>
                 {validationErrors.status && (
                   <p className="text-red-600 dark:text-red-400 text-sm">
@@ -302,11 +330,45 @@ function EditLead() {
                   </p>
                 )}
               </div>
+              <div className="col-span-1 mb-4">
+                <label className="block text-gray-700 dark:text-gray-300 font-medium mb-2">
+                  Assign To:
+                </label>
+                <select
+                  name="assign_to"
+                  value={formData.assign_to || ""}
+                  onChange={handleChange}
+                  required
+                  className="w-full border-gray-300 dark:border-gray-600 rounded-md shadow-sm p-2 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-200 focus:border-indigo-500 focus:ring-indigo-500"
+                >
+                  <option value="">Select User</option>
+                  {usersList.map((user) => {
+                    return (
+                      <>
+                        {formData.assign_to === user.id ? (
+                          <option key={user.id} value={user.id} selected>
+                            {user.name}
+                          </option>
+                        ) : (
+                          <option key={user.id} value={user.id}>
+                            {user.name}
+                          </option>
+                        )}
+                      </>
+                    );
+                  })}
+                </select>
+                {validationErrors.assign_to && (
+                  <p className="text-red-600 dark:text-red-400 text-sm">
+                    {validationErrors.assign_to}
+                  </p>
+                )}
+              </div>
             </div>
-            <div className="flex justify-center mt-8">
+            <div className="flex justify-center gap-6 mt-8">
               <button
                 type="submit"
-                className="py-3 px-6 text-white bg-gray-900 dark:bg-gray-600 hover:bg-gray-700 dark:hover:bg-gray-500 rounded-md focus:outline-none"
+                className="py-3 px-6 text-white bg-blue-900 dark:bg-blue-600 hover:bg-blue-700 dark:hover:bg-blue-500 rounded-md focus:outline-none"
                 disabled={loading}
               >
                 {loading ? (
@@ -315,6 +377,7 @@ function EditLead() {
                   "Update Lead"
                 )}
               </button>
+              <BackButton url="leads" />
             </div>
           </form>
         )}

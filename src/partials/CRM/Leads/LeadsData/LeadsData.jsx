@@ -2,6 +2,13 @@ import GlobalAxios from "../../../../Global/GlobalAxios";
 
 const LeadsData = async (pageNo, rto_location, rto_year, rto_lead_status) => {
 
+  sessionStorage.setItem("leads_page", pageNo);
+  sessionStorage.setItem("leads_rto_location", rto_location);
+  sessionStorage.setItem("leads_rto_year", rto_year);
+  sessionStorage.setItem("leads_rto_lead_status", rto_lead_status);
+  
+
+
   let url = `/admin/leads?page=${pageNo}`;
 
   if (rto_location) {

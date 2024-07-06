@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import LeadsData from "./LeadsData/LeadsData";
-import { HashLoader } from "react-spinners";
+import { ClipLoader, HashLoader } from "react-spinners";
 import FilterComponent from "./Filters/FilterComponent";
-import { useNavigate } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { RiDeleteBinFill } from "react-icons/ri";
 import { toast } from "react-toastify";
 import GlobalAxios from "../../../Global/GlobalAxios";
@@ -20,6 +20,13 @@ const LeadRowContainer = () => {
   const [selectedRto, setSelectedRto] = useState("");
   const [selectedYear, setSelectedYear] = useState("");
   const [selectedStatus, setSelectedStatus] = useState("");
+  const [selectAllChecked, setSelectAllChecked] = useState(false);
+
+  const [userList, setUserList] = useState([]);
+  const [selectedUser, setSelectedUser] = useState("");
+
+
+  const [Assignloading, setAssignLoading] = useState(false);
 
   useEffect(() => {
     setLoading(true); // Start loading
@@ -32,6 +39,12 @@ const LeadRowContainer = () => {
       setLoading(false); // Stop loading
     });
   }, [currentPage]);
+
+  useEffect(() => {
+    // Update select all checkbox based on individual checkboxes
+    const allChecked = leadData.every((lead) => lead.checked);
+    setSelectAllChecked(allChecked);
+  }, [leadData]);
 
   const handleEditClick = (leadId) => {
     navigate(`/admin/leads/edit/${leadId}`);
@@ -56,9 +69,6 @@ const LeadRowContainer = () => {
           });
           document.getElementById("my_modal_5").close();
           setLoading(false); // Stop loading
-          setTimeout(() => {
-            window.location.reload();
-          }, 4000);
         });
       }
     } catch (error) {
@@ -80,7 +90,6 @@ const LeadRowContainer = () => {
       selectedStatus
     );
 
-    console.log(data.data);
     setLeadData(data.data);
     setPagination({
       total_pages: data.paginate_data.total_pages,
@@ -93,7 +102,7 @@ const LeadRowContainer = () => {
     if (pagination.total_pages > currentPage) {
       setCurrentPage(currentPage + 1);
       setLoading(true); // Start loading
-      LeadsData(currentPage, selectedRto);
+      LeadsData(currentPage, selectedRto, selectedYear,selectedStatus);
     }
   };
 
@@ -101,9 +110,60 @@ const LeadRowContainer = () => {
     if (currentPage > 1) {
       setCurrentPage(currentPage - 1);
       setLoading(true); // Start loading
-      LeadsData(currentPage, selectedRto, selectedYear);
+      LeadsData(currentPage, selectedRto, selectedYear,selectedStatus);
     }
   };
+
+  const toggleSelectAll = () => {
+    const updatedData = leadData.map((lead) => ({
+      ...lead,
+      checked: !selectAllChecked,
+    }));
+    setLeadData(updatedData);
+    setSelectAllChecked(!selectAllChecked);
+  };
+
+  const handleCheckboxChange = (index) => {
+    const updatedData = [...leadData];
+    updatedData[index].checked = !updatedData[index].checked;
+    setLeadData(updatedData);
+  };
+
+  const handleAssignLead = async () => {
+    setAssignLoading(true);
+    const selectedLeadIds = leadData
+      .filter((lead) => lead.checked)
+      .map((lead) => lead.id);
+
+    let data = {
+      selectedLead: selectedLeadIds,
+      selectedUser: selectedUser,
+    };
+
+try{
+    const response = await GlobalAxios.post("/admin/leads_assign", data);  
+       if(response.data.status === 'success'){
+          toast.success(response.data.message);
+          setAssignLoading(false);
+          LeadsData(currentPage, selectedRto, selectedYear,selectedStatus);
+       }else{
+          toast.error("Something went wrong");
+       }
+      }catch(error){
+        console.log(error);
+        toast.error("Something went wrong");
+      }
+  };
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      const response = await GlobalAxios.get("/admin/usersforlead");
+      // console.log(response.data.data);
+      setUserList(response.data.data);
+    };
+
+    fetchUser();
+  }, []);
 
   return (
     <>
@@ -116,6 +176,36 @@ const LeadRowContainer = () => {
         setSelectedStatus={setSelectedStatus}
         applyFilter={applyFilter}
       />
+      <div>
+        <div
+          className="w-[340px] py-4 px-8 bg-white rounded-xl my-4 shadow-md border border-gray-200
+        flex gap-8 items-center dark:bg-gray-900"
+        >
+          <select
+            name=""
+            id=""
+            onChange={(e) => setSelectedUser(e.target.value)}
+            className=" border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 text-sm"
+          >
+            <option value="">Select User</option>
+            {userList.map((user) => {
+              return (
+                <option key={user.id} value={user.id}>
+                  {user.name}
+                </option>
+              );
+            })}
+          </select>
+          {selectedUser && (
+            <button
+              className="px-4 py-2 bg-gray-900 text-white rounded-xl"
+              onClick={handleAssignLead}
+            >
+             {Assignloading ? <ClipLoader size={20} color={"#FFF"} /> : "Assign"}
+            </button>
+          )}
+        </div>
+      </div>
       {loading ? (
         <div className="flex justify-center py-16 items-center h-full dark:bg-gray-900">
           <HashLoader color="#7B74EC" size={50} />
@@ -126,7 +216,11 @@ const LeadRowContainer = () => {
             <thead>
               <tr>
                 <th className="pl-9 py-3 text-xs font-medium leading-4 tracking-wider text-left text-gray-500 uppercase border-b border-gray-200 bg-gray-50 dark:text-gray-400 dark:bg-gray-800">
-                  S.No
+                  <input
+                    type="checkbox"
+                    checked={selectAllChecked}
+                    onChange={toggleSelectAll}
+                  />
                 </th>
                 <th className="px-6 py-3 text-xs font-medium leading-4 tracking-wider text-left text-gray-500 uppercase border-b border-gray-200 bg-gray-50 dark:text-gray-400 dark:bg-gray-800">
                   Registration Number
@@ -144,7 +238,7 @@ const LeadRowContainer = () => {
                   Phone No
                 </th>
                 <th className=" py-3 text-xs font-medium leading-4 tracking-wider text-center text-gray-500 uppercase border-b border-gray-200 bg-gray-50 dark:text-gray-400 dark:bg-gray-800">
-                  Address
+                  Assign To
                 </th>
                 <th className=" py-3 text-xs font-medium leading-4 tracking-wider text-center text-gray-500 uppercase border-b border-gray-200 bg-gray-50 dark:text-gray-400 dark:bg-gray-800">
                   Status
@@ -156,20 +250,32 @@ const LeadRowContainer = () => {
             </thead>
             <tbody className="bg-white dark:bg-gray-900">
               {leadData.map((lead, index) => (
-                <tr key={lead.id} className="dark:bg-gray-800">
-                  <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200 dark:border-gray-700">
-                    <div className="flex items-center">
-                      <div className="ml-4">
-                        <div className="text-sm font-medium leading-5 text-gray-900 dark:text-gray-300">
-                          {currentPage * 10 - 10 + index + 1}
-                        </div>
-                      </div>
-                    </div>
+                <tr key={lead.id} className={`dark:bg-gray-800 ${(lead.assign_to_name)==="-" ? "bg-blue-100" : "bg-white"}`}>
+                  <td className="pl-9 py-4 whitespace-no-wrap border-b border-gray-200 dark:border-gray-700">
+                    {lead.assign_to_name === "-" ? (
+                      <input
+                        type="checkbox"
+                        checked={lead.checked || false}
+                        onChange={() => handleCheckboxChange(index)}
+                        data-id={lead.id}
+                      />
+                    ) : (
+                      <input
+                        type="checkbox"
+                        checked={lead.checked || false}
+                        onChange={() => handleCheckboxChange(index)}
+                        data-id={lead.id}
+                        disabled
+                      />
+                    )}
                   </td>
                   <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200 dark:border-gray-700">
-                    <div className="text-sm leading-5 text-gray-500 dark:text-gray-300">
+                    <NavLink
+                      to={`/admin/leads/showDetails/${lead.id}`}
+                      className="text-sm leading-5 text-gray-500 dark:text-gray-300"
+                    >
                       {lead.register_number}
-                    </div>
+                    </NavLink>
                   </td>
                   <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200 dark:border-gray-700">
                     <div className="text-sm leading-5 text-gray-900 dark:text-gray-300">
@@ -193,7 +299,7 @@ const LeadRowContainer = () => {
                   </td>
                   <td className="px-6 py-4 text-sm leading-5 text-gray-500 whitespace-no-wrap border-b border-gray-200 dark:border-gray-700">
                     <div className="text-sm leading-5 text-gray-500 dark:text-gray-300">
-                      {lead.address}
+                      {lead.assign_to_name}
                     </div>
                   </td>
                   <td className="px-6 py-4 text-sm leading-5 text-gray-500 whitespace-no-wrap border-b border-gray-200 dark:border-gray-700">
@@ -229,7 +335,7 @@ const LeadRowContainer = () => {
               <h3 className="font-bold flex justify-center">
                 <RiDeleteBinFill className="text-red-400 text-6xl text-center" />
               </h3>
-              <p className="text-center">Are you sure</p>
+              <p className="text-center">Are you sure?</p>
               <p className="text-center">
                 Do you really want to delete this lead?
               </p>
@@ -280,5 +386,4 @@ const LeadRowContainer = () => {
     </>
   );
 };
-
 export default LeadRowContainer;

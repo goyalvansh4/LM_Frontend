@@ -4,6 +4,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { ClipLoader } from "react-spinners";
 import GlobalAxios from "../../../../../Global/GlobalAxios";
 import { Navigate } from "react-router-dom";
+import BackButton from "../../../../../components/Button/BackButton";
 
 const AddUser = () => {
   const [formData, setFormData] = useState({
@@ -175,7 +176,7 @@ const AddUser = () => {
               )}
             </div>
           </div>
-          <div className="flex justify-center mt-6">
+          <div className="flex justify-center gap-5 mt-6">
             <button
               type="submit"
               className="py-3 px-6 text-white bg-blue-600 hover:bg-blue-500 text-lg rounded-lg font-semibold shadow-md flex items-center dark:bg-blue-500 dark:hover:bg-blue-400"
@@ -183,6 +184,7 @@ const AddUser = () => {
             >
               {loading ? <ClipLoader size={20} color={"#FFF"} /> : "Add User"}
             </button>
+            <BackButton url="users" />
           </div>
         </form>
       </div>

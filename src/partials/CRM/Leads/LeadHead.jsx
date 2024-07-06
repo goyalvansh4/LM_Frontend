@@ -70,7 +70,9 @@ const LeadHead = () => {
   return (
     <>
       <div className="w-full lead_head flex items-center justify-between ">
-        <h3 className="text-3xl font-medium text-gray-700 dark:text-white">Leads</h3>
+        <h3 className="text-3xl font-medium text-gray-700 dark:text-white">
+          Leads
+        </h3>
         <div className="flex justify-end gap-5 ">
           <button
             className="btn rounded-md text-white bg-gray-900 px-4 py-2 cursor-pointer dark:text-black dark:bg-white"
@@ -85,9 +87,18 @@ const LeadHead = () => {
             className="modal w-3/4 py-10 modal-bottom sm:modal-middle rounded-3xl mx-auto dark:bg-gray-800"
           >
             <div className="modal-box py-12 flex flex-col gap-8 justify-center px-8">
-              <div className="flex gap-4 items-center">
-              <FaFileUpload className="font-bold text-3xl text-blue-600"/>
-              <h3 className="font-bold text-lg">Upload File</h3>
+              <div className="flex gap-4 justify-between items-center">
+                <div className="flex gap-4 items-center">
+                  <FaFileUpload className="font-bold text-3xl text-blue-600" />
+                  <h3 className="font-bold text-lg">Upload File</h3>
+                </div>
+                <a
+                  href="./Sample.xlsx" type="text/xlsx" // Provide the path to your CSV file here
+                  download
+                  className="btn py-2 px-3 text-white bg-blue-600 dark:text-gray-500 dark:bg-white"
+                >
+                  Download Sample CSV
+                </a>
               </div>
               <p className="text-sm">Data that we expect:</p>
               <p className="font-bold">Format of CSV File</p>
@@ -95,31 +106,25 @@ const LeadHead = () => {
                 <thead className="bg-gray-50">
                   <tr className="flex justify-between gap-4 px-4">
                     <th className="py-3 text-xs font-medium leading-4 text-gray-500">
-                      S.No
+                      register_number
                     </th>
                     <th className="py-3 text-xs font-medium leading-4 text-gray-500">
-                      Registration No
+                      rto_location
                     </th>
                     <th className="py-3 text-xs font-medium leading-4 text-gray-500">
-                      RTO Location
+                      register_date
                     </th>
                     <th className="py-3 text-xs font-medium leading-4 text-gray-500">
-                      Registration Date
+                      customer_name
                     </th>
                     <th className="py-3 text-xs font-medium leading-4 text-gray-500">
-                      Customer Name
+                      customer_mobile
                     </th>
                     <th className="py-3 text-xs font-medium leading-4 text-gray-500">
-                      Phone No
+                      address
                     </th>
                     <th className="py-3 text-xs font-medium leading-4 text-gray-500">
-                      Address
-                    </th>
-                    <th className="py-3 text-xs font-medium leading-4 text-gray-500">
-                      Status
-                    </th>
-                    <th className="py-3 text-xs font-medium leading-4 text-gray-500">
-                      Action
+                      status
                     </th>
                   </tr>
                 </thead>

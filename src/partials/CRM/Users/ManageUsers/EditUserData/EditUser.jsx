@@ -4,6 +4,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { ClipLoader } from "react-spinners";
 import { useParams } from "react-router-dom";
 import GlobalAxios from "../../../../../Global/GlobalAxios";
+import BackButton from "../../../../../components/Button/BackButton";
 
 const EditUser = () => {
   const { id } = useParams(); // Assuming the user ID is passed as a route parameter
@@ -154,7 +155,7 @@ const EditUser = () => {
                 </select>
               </div>
             </div>
-            <div className="flex justify-center mt-6">
+            <div className="flex justify-center gap-6 mt-6">
               <button
                 type="submit"
                 className="py-3 px-6 text-white bg-blue-600 hover:bg-blue-500 dark:bg-blue-700 dark:hover:bg-blue-600 text-lg rounded-lg font-semibold shadow-md flex items-center"
@@ -166,6 +167,7 @@ const EditUser = () => {
                   "Update User"
                 )}
               </button>
+              <BackButton url="users" />
             </div>
           </form>
         )}

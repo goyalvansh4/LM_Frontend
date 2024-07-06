@@ -6,6 +6,7 @@ import { ClipLoader } from "react-spinners";
 import "../main.css";
 import GlobalAxios from "../../../../../Global/GlobalAxios";
 import { Navigate } from "react-router-dom";
+import BackButton from "../../../../../components/Button/BackButton";
 
 function AddLead() {
   const [rtoLocations, setRtoLocations] = useState([]);
@@ -221,7 +222,7 @@ function AddLead() {
                 Phone No:
               </label>
               <input
-                type="text"
+                type="tel"
                 name="customer_mobile"
                 value={formData.customer_mobile}
                 onChange={handleChange}
@@ -279,14 +280,15 @@ function AddLead() {
               )}
             </div>
           </div>
-          <div className="flex justify-center mt-8">
+          <div className="flex justify-center gap-6 mt-8">
             <button
               type="submit"
-              className="py-3 px-6 text-white bg-gray-900 dark:bg-gray-700 hover:bg-gray-800 dark:hover:bg-gray-600 text-lg rounded-lg font-semibold shadow-md transition-colors duration-300"
+              className="py-3 px-6 text-white bg-blue-900 dark:bg-blue-700 hover:bg-blue-800 dark:hover:bg-blue-600 text-lg rounded-lg font-semibold shadow-md transition-colors duration-300"
               disabled={loading}
             >
               {loading ? <ClipLoader size={20} color={"#FFF"} /> : "Add Lead"}
             </button>
+            <BackButton url="leads" />
           </div>
         </form>
       </div>
