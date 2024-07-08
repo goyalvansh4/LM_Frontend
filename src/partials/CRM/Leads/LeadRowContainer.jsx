@@ -17,20 +17,17 @@ const LeadRowContainer = () => {
     total_pages: 0,
   });
   const navigate = useNavigate();
-  const [selectedRto, setSelectedRto] = useState("");
-  const [selectedYear, setSelectedYear] = useState("");
-  const [selectedStatus, setSelectedStatus] = useState("");
   const [selectAllChecked, setSelectAllChecked] = useState(false);
 
   const [userList, setUserList] = useState([]);
   const [selectedUser, setSelectedUser] = useState("");
-
-
   const [Assignloading, setAssignLoading] = useState(false);
 
   useEffect(() => {
     setLoading(true); // Start loading
-    LeadsData(currentPage).then((data) => {
+    //sessionStorage.setItem("leads_page", currentPage);
+    window.page = currentPage;
+    LeadsData().then((data) => {
       setLeadData(data.data);
       setPagination({
         total_pages: data.paginate_data.total_pages,
@@ -40,11 +37,105 @@ const LeadRowContainer = () => {
     });
   }, [currentPage]);
 
+  // useEffect(() => {
+  //   // Update select all checkbox based on individual checkboxes
+  //   const allChecked = leadData.every((lead) => lead.checked);
+  //   setSelectAllChecked(allChecked);
+  // }, [leadData]);
+
+  const applyFilter = async () => {
+    setLoading(true); // Start loading
+    //sessionStorage.setItem("leads_page", currentPage);
+    window.page = currentPage;
+    let data = await LeadsData();
+    setLeadData(data.data);
+    setPagination({
+      total_pages: data.paginate_data.total_pages,
+      total_rows: data.paginate_data.total_rows,
+    });
+    setLoading(false); // Stop loading
+  };
+
+  const toggleSelectAll = () => {
+    const updatedData = leadData.map((lead) => ({
+      ...lead,
+      checked: !selectAllChecked,
+    }));
+    setLeadData(updatedData);
+    setSelectAllChecked(!selectAllChecked);
+  };
+
+  const handleCheckboxChange = (index) => {
+    const updatedData = [...leadData];
+    updatedData[index].checked = !updatedData[index].checked;
+    setLeadData(updatedData);
+  };
+
+  const handleAssignLead = async () => {
+    setAssignLoading(true);
+    const selectedLeadIds = leadData
+      .filter((lead) => lead.checked)
+      .map((lead) => lead.id);
+
+    let data = {
+      selectedLead: selectedLeadIds,
+      selectedUser: selectedUser,
+    };
+
+    try {
+      const response = await GlobalAxios.post("/admin/leads_assign", data);
+      if (response.data.status === "success") {
+        toast.success(response.data.message);
+        setAssignLoading(false);
+        LeadsData().then((data) => {
+          console.log(data);
+          setLeadData(data.data);
+          // setPagination({
+          //   total_pages: data.paginate_data.total_pages,
+          //   total_rows: data.paginate_data.total_rows,
+          // });
+          setLoading(false); // Stop loading
+        });
+      } else {
+        toast.error("Something went wrong");
+      }
+    } catch (error) {
+      console.log(error);
+      toast.error("Something went wrong");
+    }
+  };
+
   useEffect(() => {
-    // Update select all checkbox based on individual checkboxes
-    const allChecked = leadData.every((lead) => lead.checked);
-    setSelectAllChecked(allChecked);
-  }, [leadData]);
+    const fetchUser = async () => {
+      const response = await GlobalAxios.get("/admin/usersforlead");
+      // console.log(response.data.data);
+      setUserList(response.data.data);
+    };
+
+    fetchUser();
+  }, []);
+
+  const handleNext = () => {
+    if (pagination.total_pages > currentPage) {
+      setCurrentPage(currentPage + 1);
+      setLoading(true); // Start loading
+      //sessionStorage.setItem("leads_page", currentPage);
+      window.page = currentPage;
+      const response = LeadsData();
+      setLeadData(response.data);
+    }
+  };
+
+  const handlePrev = () => {
+    if (currentPage > 1) {
+      setCurrentPage(currentPage - 1);
+      setLoading(true); // Start loading
+      //sessionStorage.setItem("leads_page", currentPage);
+      window.page = currentPage;
+      const response = LeadsData();
+      setLeadData(response.data);
+    }
+  };
 
   const handleEditClick = (leadId) => {
     navigate(`/admin/leads/edit/${leadId}`);
@@ -81,101 +172,9 @@ const LeadRowContainer = () => {
     }
   };
 
-  const applyFilter = async () => {
-    setLoading(true); // Start loading
-    let data = await LeadsData(
-      currentPage,
-      selectedRto,
-      selectedYear,
-      selectedStatus
-    );
-
-    setLeadData(data.data);
-    setPagination({
-      total_pages: data.paginate_data.total_pages,
-      total_rows: data.paginate_data.total_rows,
-    });
-    setLoading(false); // Stop loading
-  };
-
-  const handleNext = () => {
-    if (pagination.total_pages > currentPage) {
-      setCurrentPage(currentPage + 1);
-      setLoading(true); // Start loading
-      LeadsData(currentPage, selectedRto, selectedYear,selectedStatus);
-    }
-  };
-
-  const handlePrev = () => {
-    if (currentPage > 1) {
-      setCurrentPage(currentPage - 1);
-      setLoading(true); // Start loading
-      LeadsData(currentPage, selectedRto, selectedYear,selectedStatus);
-    }
-  };
-
-  const toggleSelectAll = () => {
-    const updatedData = leadData.map((lead) => ({
-      ...lead,
-      checked: !selectAllChecked,
-    }));
-    setLeadData(updatedData);
-    setSelectAllChecked(!selectAllChecked);
-  };
-
-  const handleCheckboxChange = (index) => {
-    const updatedData = [...leadData];
-    updatedData[index].checked = !updatedData[index].checked;
-    setLeadData(updatedData);
-  };
-
-  const handleAssignLead = async () => {
-    setAssignLoading(true);
-    const selectedLeadIds = leadData
-      .filter((lead) => lead.checked)
-      .map((lead) => lead.id);
-
-    let data = {
-      selectedLead: selectedLeadIds,
-      selectedUser: selectedUser,
-    };
-
-try{
-    const response = await GlobalAxios.post("/admin/leads_assign", data);  
-       if(response.data.status === 'success'){
-          toast.success(response.data.message);
-          setAssignLoading(false);
-          LeadsData(currentPage, selectedRto, selectedYear,selectedStatus);
-       }else{
-          toast.error("Something went wrong");
-       }
-      }catch(error){
-        console.log(error);
-        toast.error("Something went wrong");
-      }
-  };
-
-  useEffect(() => {
-    const fetchUser = async () => {
-      const response = await GlobalAxios.get("/admin/usersforlead");
-      // console.log(response.data.data);
-      setUserList(response.data.data);
-    };
-
-    fetchUser();
-  }, []);
-
   return (
     <>
-      <FilterComponent
-        selectedRto={selectedRto}
-        selectedYear={selectedYear}
-        selectedStatus={selectedStatus}
-        setSelectedRto={setSelectedRto}
-        setSelectedYear={setSelectedYear}
-        setSelectedStatus={setSelectedStatus}
-        applyFilter={applyFilter}
-      />
+      <FilterComponent applyFilter={applyFilter} />
       <div>
         <div
           className="w-[340px] py-4 px-8 bg-white rounded-xl my-4 shadow-md border border-gray-200
@@ -201,7 +200,11 @@ try{
               className="px-4 py-2 bg-gray-900 text-white rounded-xl"
               onClick={handleAssignLead}
             >
-             {Assignloading ? <ClipLoader size={20} color={"#FFF"} /> : "Assign"}
+              {Assignloading ? (
+                <ClipLoader size={20} color={"#FFF"} />
+              ) : (
+                "Assign"
+              )}
             </button>
           )}
         </div>
@@ -250,7 +253,12 @@ try{
             </thead>
             <tbody className="bg-white dark:bg-gray-900">
               {leadData.map((lead, index) => (
-                <tr key={lead.id} className={`dark:bg-gray-800 ${(lead.assign_to_name)==="-" ? "bg-blue-100" : "bg-white"}`}>
+                <tr
+                  key={lead.id}
+                  className={`dark:bg-gray-800 ${
+                    lead.assign_to_name === "-" ? "bg-blue-100" : "bg-white"
+                  }`}
+                >
                   <td className="pl-9 py-4 whitespace-no-wrap border-b border-gray-200 dark:border-gray-700">
                     {lead.assign_to_name === "-" ? (
                       <input

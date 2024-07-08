@@ -6,16 +6,14 @@ import App from './App';
 import { Provider } from 'react-redux';
 import store from './redux/store/store';
 
-
-
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
-    <Router>
+    <Provider store={store}>
       <ThemeProvider>
-      <Provider store={store}>
-        <App />
-      </Provider>
+        <Router>
+          <App />
+        </Router>
       </ThemeProvider>
-    </Router>
+    </Provider>
   </React.StrictMode>
 );

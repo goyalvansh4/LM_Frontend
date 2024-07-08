@@ -68,8 +68,7 @@ const ShowDetails = () => {
         setLead({ ...lead, remarks: remarkText });
         toast.success("Remark added successfully!");
         closeModal();
-      }
-      else{
+      } else {
         toast.error("Failed to add remark!");
       }
     } catch (error) {
@@ -90,7 +89,10 @@ const ShowDetails = () => {
     try {
       const response = await GlobalAxios.post(`/admin/leads_dueDate`, data);
       if (response.data.status === "success") {
+        setLead({ ...lead, due_date: date });
         toast.success("Follow up date set successfully!");
+      } else {
+        toast.error("Failed to set follow up date!");
       }
     } catch (error) {
       console.error("Error setting follow up date:", error);

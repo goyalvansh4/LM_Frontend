@@ -1,41 +1,39 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
-import Cookies from "js-cookie";
 import GlobalAxios from "../../../../Global/GlobalAxios";
 
-const FilterComponent = ({
-  selectedRto,
-  setSelectedRto,
-  applyFilter,
-  selectedYear,
-  setSelectedYear,
-  selectedStatus,
-  setSelectedStatus,
-}) => {
+const FilterComponent = ({ applyFilter }) => {
   const [states, setStates] = useState([]);
   const [rtoLocations, setRtoLocations] = useState([]);
   const [years, setYears] = useState([]);
   const [statuses, setStatuses] = useState([]);
+  const [userList, setUserList] = useState([]);
 
+  const [selectedUser, setSelectedUser] = useState("");
   const [selectedState, setSelectedState] = useState("");
+  const [selectedRto, setSelectedRto] = useState(window.rto_location || "");
+  const [selectedYear, setSelectedYear] = useState(window.year || "");
+  const [selectedStatus, setSelectedStatus] = useState(window.status || "");
+
+  const [selectedPerPage, setSelectedPerPage] = useState(window.per_page || "");
+  const [selectedAssignTo, setSelectedAssignTo] = useState(
+    window.assign_to || ""
+  );
+  const [selectedSituation, setSelectedSituation] = useState(
+    window.situation || ""
+  );
 
   // Fetch filter data from API
   useEffect(() => {
     const fetchFilters = async () => {
       try {
-        const response = await GlobalAxios.get(
-          "/admin/leads_filters",
-        );
-
+        const response = await GlobalAxios.get("/admin/leads_filters");
         const data = response.data.data;
         setStates(data.state);
         setYears(data.years);
         setStatuses(data.lead_status);
 
-        // Fetch RTO options for the default state if available
-        if (data.state.length > 0) {
-          setSelectedState(data.state[0].id);
-        }
+        // Default selected state is empty
+        setSelectedState("");
       } catch (error) {
         console.error("Error fetching filter data:", error);
       }
@@ -44,15 +42,14 @@ const FilterComponent = ({
     fetchFilters();
   }, []);
 
-  // Fetch RTO locations based on the selected state
+  // Fetch RTO Locations based on the selected state
   useEffect(() => {
     const fetchRtoLocations = async () => {
       if (selectedState) {
         try {
           const response = await GlobalAxios.get(
-            `/admin/rtolocations/state/${selectedState}`,
+            `/admin/rtolocations/state/${selectedState}`
           );
-
           setRtoLocations(response.data.data);
         } catch (error) {
           console.error("Error fetching RTO locations:", error);
@@ -60,13 +57,47 @@ const FilterComponent = ({
       } else {
         setRtoLocations([]);
       }
-      setSelectedRto(""); // Reset RTO selection when state changes
     };
 
     fetchRtoLocations();
   }, [selectedState]);
 
-  //
+  useEffect(() => {
+    const fetchUser = async () => {
+      const response = await GlobalAxios.get("/admin/usersforlead");
+      // console.log(response.data.data);
+      setUserList(response.data.data);
+    };
+
+    fetchUser();
+  }, []);
+
+  const handleFilter = () => {
+    window.state = selectedState;
+    window.rto_location = selectedRto;
+    window.year = selectedYear;
+    window.status = selectedStatus;
+    window.per_page = selectedPerPage;
+    window.assign_to = selectedAssignTo;
+    window.situation = selectedSituation;
+
+    applyFilter();
+  };
+
+  const handleReset = () => {
+    window.location.href = window.location.href;
+    return;
+
+    window.state = "";
+    window.rto_location = "";
+    window.year = "";
+    window.status = "";
+    window.per_page = "";
+    window.assign_to = "";
+    window.situation = "";
+    // window.page =  1;
+    applyFilter();
+  };
 
   return (
     <div className="p-4 bg-white rounded-xl my-4 shadow-md border border-gray-200">
@@ -148,12 +179,72 @@ const FilterComponent = ({
           </select>
         </div>
 
-        <button
-          onClick={applyFilter}
-          className="px-4 py-2 bg-gray-900 text-white rounded-xl"
-        >
-          Apply
-        </button>
+        {/* Assign Lead Filter */}
+        <div className="flex flex-col w-full sm:w-1/5">
+          <label className="text-gray-700 font-semibold mb-1">
+            Assigned Situation
+          </label>
+          <select
+            value={selectedSituation}
+            onChange={(e) => setSelectedSituation(e.target.value)}
+            className="p-1 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 text-sm"
+          >
+            <option value="">Select Situation</option>
+            <option value="assigned">Assigned</option>
+            <option value="notassigned">Not Assigned</option>
+          </select>
+        </div>
+
+        {/* Users Filter */}
+        <div className="flex flex-col w-full sm:w-1/5">
+          <label className="text-gray-700 font-semibold mb-1">Assing To</label>
+          <select
+            value={selectedAssignTo}
+            onChange={(e) => setSelectedAssignTo(e.target.value)}
+            className="p-1 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 text-sm"
+          >
+            <option value="">Select User</option>
+            {userList.map((user) => {
+              return (
+                <option key={user.id} value={user.id}>
+                  {user.name}
+                </option>
+              );
+            })}
+          </select>
+        </div>
+
+        <div className="flex flex-col w-full sm:w-1/5">
+          <label className="text-gray-700 font-semibold mb-1">Per Page</label>
+          <select
+            value={selectedPerPage}
+            onChange={(e) => setSelectedPerPage(e.target.value)}
+            className="p-1 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 text-sm"
+          >
+            <option value="">Select Page</option>
+            <option value="10">10</option>
+            <option value="20">20</option>
+            <option value="30">30</option>
+            <option value="40">40</option>
+            <option value="50">50</option>
+          </select>
+        </div>
+
+        {/* Apply Filter Button */}
+        <div className="w-1/5 flex gap-4 items-center mt-2">
+          <button
+            onClick={handleFilter}
+            className="px-4 py-2 bg-gray-900 text-white rounded-xl"
+          >
+            Apply
+          </button>
+          <button
+            onClick={handleReset}
+            className="px-4 py-2 bg-red-600 text-white rounded-xl"
+          >
+            Reset
+          </button>
+        </div>
       </div>
     </div>
   );

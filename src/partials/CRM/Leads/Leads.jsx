@@ -15,8 +15,6 @@ const Leads = () => {
 
 
   const [leadStat, setLeadStat] = useState([]);
-  const [total, setTotal] = useState(0);
-
   const fetch = async () => {
     try {
       const response = await GlobalAxios.get(
