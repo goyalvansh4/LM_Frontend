@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { NavLink } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import Transition from '../utils/Transition';
 
 
@@ -11,6 +11,8 @@ function DropdownProfile({
 
   const trigger = useRef(null);
   const dropdown = useRef(null);
+
+  const navigate = useNavigate();
 
   // close on click outside
   useEffect(() => {
@@ -32,6 +34,14 @@ function DropdownProfile({
     document.addEventListener('keydown', keyHandler);
     return () => document.removeEventListener('keydown', keyHandler);
   });
+
+
+  const handleSignOut = () => {
+    setDropdownOpen(!dropdownOpen)
+    document.cookie = `auth_token=${null}; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
+    document.cookie = `role=${null}; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
+    navigate("/")
+  }
 
   return (
     <div className="relative inline-flex">
@@ -71,13 +81,13 @@ function DropdownProfile({
           </div>
           <ul>
             <li>
-              <NavLink
+              <button
                 className="font-medium text-sm text-indigo-500 hover:text-indigo-600 dark:hover:text-indigo-400 flex items-center py-1 px-3"
                 to="/"
-                onClick={() => setDropdownOpen(!dropdownOpen)}
+                onClick={handleSignOut}
               >
                 Sign Out
-              </NavLink>
+              </button>
             </li>
           </ul>
         </div>
