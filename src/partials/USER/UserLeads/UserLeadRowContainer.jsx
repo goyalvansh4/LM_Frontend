@@ -105,9 +105,7 @@ const UserLeadRowContainer = () => {
               {leadData.map((lead, index) => (
                 <tr
                   key={lead.id}
-                  className={`dark:bg-gray-800 ${
-                    lead.assign_to_name === "-" ? "bg-blue-100" : "bg-white"
-                  }`}
+                  className={`dark:bg-gray-800`}
                 >
                   <td className="pl-9 py-4 whitespace-no-wrap border-b border-gray-200 dark:border-gray-700">
                     {index + 1}

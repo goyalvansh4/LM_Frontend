@@ -77,7 +77,7 @@ const Leads = () => {
                 <h4 className="text-2xl font-semibold text-gray-700">
                   {total}
                 </h4>
-                <div className="text-gray-500 font-semibold uppercase">Total Leads</div>
+                <div className="text-gray-500 font-semibold uppercase">Total</div>
               </div>
             </div>
           </div>

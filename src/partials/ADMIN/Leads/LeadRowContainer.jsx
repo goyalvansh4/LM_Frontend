@@ -206,7 +206,7 @@ const LeadRowContainer = () => {
         </div>
       </div>
       {loading ? (
-        <div className="flex justify-center py-16 items-center h-full dark:bg-gray-900">
+        <div className="w-full flex justify-center py-16 items-center h-full dark:bg-gray-900">
           <HashLoader color="#7B74EC" size={50} />
         </div>
       ) : (
@@ -252,7 +252,7 @@ const LeadRowContainer = () => {
                 <tr
                   key={lead.id}
                   className={`dark:bg-gray-800 ${
-                    lead.assign_to_name === "-" ? "bg-blue-100 dark:bg-[#a5b4fc]" : "bg-white"
+                    lead.assign_to_name === "-" ? "bg-blue-100 dark:bg-[#323545]" : "bg-white"
                   }`}
                 >
                   <td className="pl-9 py-4 whitespace-no-wrap border-b border-gray-200 dark:border-gray-700">

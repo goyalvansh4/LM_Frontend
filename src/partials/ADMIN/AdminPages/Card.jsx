@@ -63,37 +63,10 @@ const Card = () => {
   }, []);
 
 
-  // const barData = [
-  //   {
-  //     country: "AD",
-  //     value: 114,
-  //   },
-  //   {
-  //     country: "AE",
-  //     value: 55,
-  //   },
-  //   {
-  //     country: "AF",
-  //     value: 90,
-  //   },
-  //   {
-  //     country: "AG",
-  //     value: 70,
-  //   },
-  //   {
-  //     country: "AI",
-  //     value: 120,
-  //   },
-  // ];
-
   return (
     <div className="px-4 sm:px-6 lg:px-8 py-8 w-full mx-auto">
       <div className="sm:flex sm:justify-between sm:items-center mb-8">
         <p className="text-4xl dark:text-white text-black">Welcome</p>
-        <div className="grid grid-flow-col sm:auto-cols-max justify-start sm:justify-end gap-2">
-          <button className="btn btn-primary">Filter</button>
-          <button className="btn btn-secondary">Datepicker</button>
-        </div>
       </div>
 
       {/* Top three progress bars */}
@@ -148,8 +121,8 @@ const Card = () => {
       </div>
 
       {/* Graphs row */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
-        <div style={{ height: "400px" }}>
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6 p-4 bg-white rounded-lg shadow-md dark:bg-gray-500 dark:text-white">
+        <div style={{ height: "400px" }} className="dark:text-white">
           <ResponsivePie
             data={pieData}
             margin={{ top: 40, right: 80, bottom: 80, left: 80 }}
@@ -157,18 +130,18 @@ const Card = () => {
             padAngle={0.7}
             cornerRadius={3}
             colors={{ scheme: "nivo" }}
-            borderWidth={1}
-            borderColor={{ from: "color", modifiers: [["darker", 0.2]] }}
+            borderWidth={3}
+            borderColor={{ from: "color", modifiers: [["darker", 1.6]] }}
             radialLabelsSkipAngle={10}
-            radialLabelsTextXOffset={6}
-            radialLabelsTextColor={`${RandomColor()}`}
-            radialLabelsLinkOffset={0}
+            radialLabelsTextXOffset={10}
+            radialLabelsTextColor={"white"}
+            radialLabelsLinkOffset={10}
             radialLabelsLinkDiagonalLength={16}
             radialLabelsLinkHorizontalLength={24}
             radialLabelsLinkStrokeWidth={1}
             radialLabelsLinkColor={{ from: "color" }}
             slicesLabelsSkipAngle={10}
-            slicesLabelsTextColor={`${RandomColor()}`}
+            slicesLabelsTextColor={"white"}
             animate={true}
             motionStiffness={90}
             motionDamping={15}

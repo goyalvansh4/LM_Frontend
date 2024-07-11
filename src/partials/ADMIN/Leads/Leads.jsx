@@ -78,7 +78,7 @@ const Leads = () => {
                     return acc + lead.leads_count;
                   }, 0)}
                 </h4>
-                <div className="text-gray-500 font-semibold uppercase">Total Leads</div>
+                <div className="text-gray-500 font-semibold uppercase">Total</div>
               </div>
             </div>
           </div>

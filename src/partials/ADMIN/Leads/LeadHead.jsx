@@ -69,7 +69,7 @@ const LeadHead = () => {
 
   return (
     <>
-      <div className="w-full lead_head flex items-center justify-between ">
+      <div className="w-full lead_head flex items-center justify-between px-2">
         <h3 className="text-3xl font-medium text-gray-700 dark:text-white">
           Leads
         </h3>
@@ -93,7 +93,8 @@ const LeadHead = () => {
                   <h3 className="font-bold text-lg">Upload File</h3>
                 </div>
                 <a
-                  href="./Sample.xlsx" type="text/xlsx" // Provide the path to your CSV file here
+                  href="./Sample.xlsx"
+                  type="text/xlsx" // Provide the path to your CSV file here
                   download
                   className="btn py-2 px-3 text-white bg-blue-600 dark:text-gray-500 dark:bg-white"
                 >

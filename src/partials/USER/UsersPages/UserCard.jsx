@@ -57,8 +57,7 @@ const UserCard = () => {
         {/* Hot Leads */}
         {leadStat.type.map((lead, index) => {
           const IconComponent = icons[index%3].component;
-          return <>
-           <div key={lead.id} className="flex flex-col items-center bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg transition-transform transform hover:scale-105">
+          return <div key={index} className="flex flex-col items-center bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg transition-transform transform hover:scale-105">
           <IconComponent
            style={{
             color: RandomColor(),
@@ -71,7 +70,6 @@ const UserCard = () => {
             {lead.lead_count}
           </p>
         </div>
-          </>
         })}
 
         
