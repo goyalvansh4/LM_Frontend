@@ -76,7 +76,7 @@ function UserSidebar({ sidebarOpen, setSidebarOpen }) {
               <path d="M10.7 18.7l1.4-1.4L7.8 13H20v-2H7.8l4.3-4.3-1.4-1.4L4 12z" />
             </svg>
           </button>
-          <NavLink end to="/admin" className="hidden lg:block">
+          <NavLink end to="/admin" className="hidden xl:block">
             <h3 className='text-3xl'>LM Dashboard</h3>
           </NavLink>
         </div>
