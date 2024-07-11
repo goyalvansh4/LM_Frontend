@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Route, Routes } from "react-router-dom";
 import Sidebar from "../Sidebar";
 import Header from "../../Header";
@@ -10,6 +10,12 @@ import AddRto from "../RTO/AddRto";
 
 function Dashboard() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  useEffect(() => {
+    if (localStorage.getItem("refresh") === null) {
+      localStorage.setItem("refresh", "true");
+      window.location.href = window.location.href;
+    }
+  }, []);
 
   return (
     <div className="flex h-screen overflow-hidden">
@@ -27,7 +33,7 @@ function Dashboard() {
             <Route path="leads/*" element={<LeadContainer />} />
             <Route path="users/*" element={<UserContainer />} />
             <Route path="addStatus" element={<AddStatus />} />
-             <Route path="addRTO" element={<AddRto />} />
+            <Route path="addRTO" element={<AddRto />} />
           </Routes>
         </main>
       </div>
