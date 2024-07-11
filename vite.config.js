@@ -25,5 +25,15 @@ export default defineConfig({
     commonjsOptions: {
       transformMixedEsModules: true,
     }
+  },
+  server: {
+    proxy: {
+      // Proxy API requests
+      '/api': {
+        target: 'http://192.168.28.152:8000',
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/api/, '/api/v1')
+      }
+    }
   } 
 })
