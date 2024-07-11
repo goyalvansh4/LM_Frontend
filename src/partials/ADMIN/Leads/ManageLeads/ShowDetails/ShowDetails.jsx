@@ -334,7 +334,7 @@ const ShowDetails = () => {
       )}
       <br />
       <div className="mt-6">
-        <BackButton url="leads" />
+        <BackButton url="/admin/leads" />
       </div>
     </div>
   );

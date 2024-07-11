@@ -115,7 +115,7 @@ const UserLeadRowContainer = () => {
                   <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200 dark:border-gray-700">
                     <NavLink
                       to={`/user/leads/showDetails/${lead.id}`}
-                      className="text-sm leading-5 text-gray-500 dark:text-gray-300"
+                      className="text-sm leading-5 text-gray-500 dark:text-gray-300 underline py-2"
                     >
                       {lead.register_number}
                     </NavLink>

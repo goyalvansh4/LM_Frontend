@@ -18,7 +18,7 @@ const Leads = () => {
   const fetch = async () => {
     try {
       const response = await GlobalAxios.get(
-        `/admin/leads_static`
+        `//leads_static`
       );
       console.log(response.data.data);
       return response.data;

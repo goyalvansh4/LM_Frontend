@@ -288,7 +288,7 @@ function AddLead() {
             >
               {loading ? <ClipLoader size={20} color={"#FFF"} /> : "Add Lead"}
             </button>
-            <BackButton url="leads" />
+            <BackButton url="/admin/leads" />
           </div>
         </form>
       </div>

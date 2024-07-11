@@ -377,7 +377,7 @@ function EditLead() {
                   "Update Lead"
                 )}
               </button>
-              <BackButton url="leads" />
+              <BackButton url="/admin/leads" />
             </div>
           </form>
         )}

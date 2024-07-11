@@ -13,15 +13,16 @@ const Leads = () => {
     { component: FaSnowflake}
   ];
 
-
+  const [total,setTotal] = useState(0);
   const [leadStat, setLeadStat] = useState([]);
   const fetch = async () => {
     try {
       const response = await GlobalAxios.get(
         `/user/leads_static`
       );
-      console.log(response.data.data);
-      return response.data;
+      console.log(response.data);
+      setTotal(response.data.count);
+       setLeadStat(response.data.data);
     } catch (error) {
       console.error("Error fetching leads:", error);
       throw error;
@@ -78,15 +79,13 @@ const Leads = () => {
 
               <div className="mx-5">
                 <h4 className="text-2xl font-semibold text-gray-700">
-                  {/* {leadStat.reduce((acc, lead) => {
-                    return acc + lead.leads_count;
-                  }, 0)} */}
+                  {total}
                 </h4>
                 <div className="text-gray-500 font-semibold uppercase">Total Leads</div>
               </div>
             </div>
           </div>
-          {/* {leadStat.map((lead, index) => {
+          {leadStat.map((lead, index) => {
             const IconComponent = icons[index%3].component;
             return (
               
@@ -104,14 +103,14 @@ const Leads = () => {
 
                   <div className="mx-5">
                     <h4 className="text-2xl font-semibold text-gray-700">
-                      {lead.leads_count}
+                      {lead.lead_count}
                     </h4>
                     <div className="text-gray-500 font-semibold uppercase">{lead.name}</div>
                   </div>
                 </div>
               </div>
             );
-          })} */}
+          })}
         </div>
       </div>
 

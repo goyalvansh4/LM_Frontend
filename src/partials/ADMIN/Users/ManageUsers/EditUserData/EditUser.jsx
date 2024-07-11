@@ -167,7 +167,7 @@ const EditUser = () => {
                   "Update User"
                 )}
               </button>
-              <BackButton url="users" />
+              <BackButton url="/admin/users" />
             </div>
           </form>
         )}

@@ -21,16 +21,19 @@ const UserShowDetails = () => {
     assign_at: "",
     due_date: "",
     remarks: "",
+    status: "",
   });
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [loading, setLoading] = useState(true);
   const [date, setDate] = useState("");
   const [remarkText, setRemarkText] = useState("");
+  const [status, setStatus] = useState([]);
+  const [selectedStatus, setSelectedStatus] = useState("");
 
   useEffect(() => {
     const fetchLead = async () => {
       try {
-        const response = await GlobalAxios.get(`/admin/leads/${id}?full=true`);
+        const response = await GlobalAxios.get(`/user/leads/${id}`);
         const data = response.data.data;
         setLead(data);
         setLoading(false);
@@ -42,6 +45,22 @@ const UserShowDetails = () => {
     };
     fetchLead();
   }, [id]);
+
+  useEffect(() => {
+    const fetchStatus = async () => {
+      try {
+        const response = await GlobalAxios.get("/user/statusList");
+        console.log(response.data);
+        if (response.data.status === "success") {
+          setStatus(response.data.data);
+          console.log(response.data.data);
+        }
+      } catch (error) {
+        console.error("Error fetching lead status:", error);
+      }
+    };
+    fetchStatus();
+  }, []);
 
   const openModal = () => {
     setIsModalOpen(true);
@@ -62,7 +81,7 @@ const UserShowDetails = () => {
     };
 
     try {
-      const response = await GlobalAxios.post(`/admin/leads_remark`, data);
+      const response = await GlobalAxios.post(`/user/lead/add_remark`, data);
       console.log(response.data);
       if (response.data.status === "success") {
         setLead({ ...lead, remarks: remarkText });
@@ -87,7 +106,7 @@ const UserShowDetails = () => {
       due_date: date,
     };
     try {
-      const response = await GlobalAxios.post(`/admin/leads_dueDate`, data);
+      const response = await GlobalAxios.post(`/user/lead/add_dueDate`, data);
       if (response.data.status === "success") {
         setLead({ ...lead, due_date: date });
         toast.success("Follow up date set successfully!");
@@ -97,6 +116,36 @@ const UserShowDetails = () => {
     } catch (error) {
       console.error("Error setting follow up date:", error);
       toast.error("Failed to set follow up date!");
+    }
+  };
+
+  const handleStatusChange = async () => {
+    console.log(selectedStatus);
+    setLead({ ...lead, status: selectedStatus });
+    const data = {
+      lead_id: id,
+      status: selectedStatus,
+    };
+    try {
+      const response = await GlobalAxios.post("/user/lead/edit_status", data);
+      console.log(response.data);
+      if (response.data.status === "success") {
+        toast.success("Status changed successfully!");
+        let name;
+        status.map((item) => {
+          if (item.id === parseInt(selectedStatus)) {
+            name = item.name;
+          }
+        });
+
+        // console.log(response.data.data);
+        setLead({ ...lead,status: selectedStatus, status_name: name });
+        console.log(name,selectedStatus);
+      } else {
+        toast.error("Failed to change status!");
+      }
+    } catch (error) {
+      console.error("Error changing status:", error);
     }
   };
 
@@ -188,40 +237,54 @@ const UserShowDetails = () => {
         </div>
       </div>
 
-      {/* Lead Assign Section */}
+      {/* Lead Status Section */}
       <div className="mb-12">
         <div className="flex items-center mb-6">
           <hr className="flex-grow border-gray-400 dark:border-gray-700" />
           <span className="mx-4 text-lg font-medium text-black dark:text-gray-200">
-            Lead Status
+            Status
           </span>
           <hr className="flex-grow border-gray-400 dark:border-gray-700" />
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-        <div className="flex flex-col gap-2">
+          <div className="flex flex-col gap-2">
             <label className="text-xs font-medium text-gray-600 dark:text-gray-400">
-              Status
+              Current Status
             </label>
             <p
               className={`text-lg ${
-                lead.status_name.toLowerCase() === "active"
-                  ? "text-green-600"
-                  : "text-red-600"
-              } uppercase`}
+                !lead.status_name
+                  ? "text-red-600"
+                  : "text-gray-800 dark:text-gray-100"
+              }`}
             >
               {lead.status_name}
             </p>
           </div>
-          <div className="flex flex-col gap-2">
-            <label className="text-xs font-medium text-gray-600 dark:text-gray-400">
-              Change Status
-            </label>
-            <select name="" id="">
-              <option value="">Select Status</option>
-              <option value="hot">Hot</option>
-              <option value="cold">Cold</option>
-              <option value="warm">Warm</option>
+          <div className="w-full flex gap-2">
+            <select
+              className="w-[80%] text-lg font-medium text-gray-600 dark:text-gray-400"
+              // value={lead.status}
+              onChange={(e) => setSelectedStatus(e.target.value)}
+            >
+              {status.map((item) => {
+                return (
+                  <option
+                    key={item.id}
+                    value={item.id}
+                    selected={item.id === lead.status}
+                  >
+                    {item.name}
+                  </option>
+                );
+              })}
             </select>
+            <button
+              onClick={handleStatusChange}
+              className="px-4 py-2 bg-blue-500 text-white font-semibold rounded-lg shadow-md hover:bg-blue-700 transition duration-300"
+            >
+              Add
+            </button>
           </div>
         </div>
       </div>
@@ -323,7 +386,7 @@ const UserShowDetails = () => {
       )}
       <br />
       <div className="mt-6">
-        <BackButton url="leads" />
+        <BackButton url="/admin/leads" />
       </div>
     </div>
   );

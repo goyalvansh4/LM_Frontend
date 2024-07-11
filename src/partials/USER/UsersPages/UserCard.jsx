@@ -4,25 +4,36 @@ import { AiOutlineFire, AiOutlineClockCircle } from "react-icons/ai";
 import {
   MdSevereCold,
 } from "react-icons/md";
-import { IoLocation } from "react-icons/io5";
 import GlobalAxios from "../../../Global/GlobalAxios";
+import { RandomColor } from "../../../utils/RandomColor";
 
 const UserCard = () => {
-  const [leadStat, setLeadStat] = useState([]);
-  const [userStat, setUserStat] = useState({
-    total: 0,
-    active: 0,
-    inactive: 0,
-    assigned: 0,
-    notAssigned: 0,
-  });
-  const [leadTypes, setLeadTypes] = useState({
-    hot: 0,
-    warm: 0,
-    cold: 0,
+  const [leadStat, setLeadStat] = useState({
+     total: 0,
+      type:[],
   });
 
-  const [rtoStat, setRtoStat] = useState(0);
+  const icons = [
+    { component: AiOutlineFire },
+    { component: AiOutlineClockCircle},
+    { component: MdSevereCold}
+  ];
+
+  useEffect(() => {
+    const fetch = async () => {
+      try {
+        const response = await GlobalAxios.get(`/user/leads_static`);
+        setLeadStat({
+          total: response.data.count,
+          type: response.data.data,
+        });
+      } catch (error) {
+        console.error("Error fetching leads:", error);
+        throw error;
+      }
+    };
+    fetch();
+  }, []);
 
   return (
     <div className="px-4 sm:px-6 lg:px-8 py-8 w-full mx-auto">
@@ -39,57 +50,31 @@ const UserCard = () => {
             Total Leads
           </h3>
           <p className="text-2xl font-bold dark:text-gray-400 mt-2">
-            {leadTypes.hot}
-          </p>
-        </div>
-
-        <div className="flex flex-col items-center bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg transition-transform transform hover:scale-105">
-          <IoLocation className="text-green-500 text-4xl mb-4" />
-
-          <h3 className="text-xl font-semibold dark:text-white mt-4">
-            Total RTO
-          </h3>
-          <p className="text-2xl font-bold dark:text-gray-400 mt-2">
-            {leadTypes.hot}
+            {leadStat.total}
           </p>
         </div>
 
         {/* Hot Leads */}
-        <div className="flex flex-col items-center bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg transition-transform transform hover:scale-105">
-          <AiOutlineFire className="text-yellow-500 text-4xl mb-4" />
+        {leadStat.type.map((lead, index) => {
+          const IconComponent = icons[index%3].component;
+          return <>
+           <div key={lead.id} className="flex flex-col items-center bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg transition-transform transform hover:scale-105">
+          <IconComponent
+           style={{
+            color: RandomColor(),
+           }} 
+           className="text-4xl mb-4" />
           <h3 className="text-xl font-semibold dark:text-white mt-4">
-            Hot Leads
+            {lead.name}
           </h3>
           <p className="text-2xl font-bold dark:text-gray-400 mt-2">
-            {leadTypes.hot}
+            {lead.lead_count}
           </p>
         </div>
+          </>
+        })}
 
-        {/* Warm Leads */}
-        <div className="flex flex-col items-center bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg transition-transform transform hover:scale-105">
-          <AiOutlineClockCircle className="text-green-500 text-4xl mb-4" />
-          <h3 className="text-xl font-semibold dark:text-white mt-4">
-            Warm Leads
-          </h3>
-          <p className="text-2xl font-bold dark:text-gray-400 mt-2">
-            {leadTypes.warm}
-          </p>
-        </div>
-
-        {/* Cold Leads */}
-        <div className="flex flex-col items-center bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg transition-transform transform hover:scale-105">
-          <MdSevereCold className="text-blue-500 text-4xl mb-4" />
-          <h3 className="text-xl font-semibold dark:text-white mt-4">
-            Cold Leads
-          </h3>
-          <p className="text-2xl font-bold dark:text-gray-400 mt-2">
-            {leadTypes.cold}
-          </p>
-        </div>
-
-        {/* Assigned Leads */}
-
-        {/* Not Assigned Leads */}
+        
       </div>
     </div>
   );

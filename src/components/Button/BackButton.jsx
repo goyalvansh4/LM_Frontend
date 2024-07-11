@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 const BackButton = ({url}) => {
   const navigate = useNavigate();
   const handleBack = () => {
-    navigate(`/admin/${url}`);
+    navigate(`${url}`);
   }
   return (
     <>

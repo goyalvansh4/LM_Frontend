@@ -184,7 +184,7 @@ const AddUser = () => {
             >
               {loading ? <ClipLoader size={20} color={"#FFF"} /> : "Add User"}
             </button>
-            <BackButton url="users" />
+            <BackButton url="/admin/users" />
           </div>
         </form>
       </div>
