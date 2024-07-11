@@ -1,8 +1,9 @@
 import axios from "axios";
 import Cookies from "js-cookie"; // Make sure you have this package installed
+const apiUrl = import.meta.env.VITE_API_URL;
 
 const GlobalAxios = axios.create({
-  baseURL: "http://192.168.28.152:8000/api/v1", // Replace with your base URL
+  baseURL: apiUrl,
   headers: {
     Accept: "application/json",
   },
