@@ -386,7 +386,7 @@ const UserShowDetails = () => {
       )}
       <br />
       <div className="mt-6">
-        <BackButton url="/admin/leads" />
+        <BackButton url="/user/leads" />
       </div>
     </div>
   );
