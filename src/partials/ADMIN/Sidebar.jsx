@@ -77,7 +77,7 @@ function Sidebar({ sidebarOpen, setSidebarOpen }) {
             </svg>
           </button>
           <NavLink end to="/admin" className="hidden xl:block">
-            <h3 className='text-3xl'>LM Dashboard</h3>
+            <h3 className='text-sm xl:text-3xl '>LM Dashboard</h3>
           </NavLink>
         </div>
 
