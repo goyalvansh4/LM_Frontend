@@ -38,7 +38,7 @@ const Leads = () => {
       <div className="mt-4">
         <div className="flex flex-wrap items-center">
           <div className="w-full px-4 sm:w-1/4 xl:w-1/4">
-            <div className="flex items-center px-5 py-6 bg-white rounded-md shadow-xl shadow-slate-200">
+            <div className="flex items-center px-5 py-6 bg-white rounded-md shadow-md shadow-slate-200">
               <div className="p-3 bg-indigo-600 bg-opacity-75 rounded-full">
                 <svg
                   className="w-8 h-8 text-white"
@@ -86,7 +86,7 @@ const Leads = () => {
             return (
               
               <div key={lead.id} className="w-full px-4 my-2 sm:w-1/4 xl:w-1/4">
-                <div className="flex items-center px-5 py-6 bg-white rounded-md shadow-xl shadow-slate-200">
+                <div className="flex items-center px-5 py-6 bg-white rounded-md shadow-md shadow-slate-200">
                   <div
                     
                     className={`p-3 bg-opacity-75 rounded-full`}

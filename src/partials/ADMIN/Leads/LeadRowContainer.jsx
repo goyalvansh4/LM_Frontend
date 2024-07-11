@@ -252,7 +252,7 @@ const LeadRowContainer = () => {
                 <tr
                   key={lead.id}
                   className={`dark:bg-gray-800 ${
-                    lead.assign_to_name === "-" ? "bg-blue-100" : "bg-white"
+                    lead.assign_to_name === "-" ? "bg-blue-100 dark:bg-[#a5b4fc]" : "bg-white"
                   }`}
                 >
                   <td className="pl-9 py-4 whitespace-no-wrap border-b border-gray-200 dark:border-gray-700">
