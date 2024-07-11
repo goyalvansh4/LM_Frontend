@@ -7,8 +7,6 @@ const UserLeadsData = async () => {
   const rto_lead_status = window.status || null;
   const per_page = window.per_page || null;
 
-  console.log("UserModuleLeadsData", pageNo, rto_location, rto_year, rto_lead_status, per_page);
-
   let url = `/user/leads?page=${pageNo}`;
 
   if (rto_location) {

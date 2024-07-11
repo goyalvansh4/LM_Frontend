@@ -65,7 +65,6 @@ const FilterComponent = ({ applyFilter }) => {
   useEffect(() => {
     const fetchUser = async () => {
       const response = await GlobalAxios.get("/admin/usersforlead");
-      // console.log(response.data.data);
       setUserList(response.data.data);
     };
 

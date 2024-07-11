@@ -37,7 +37,6 @@ const UserRowContainer = () => {
   const handleUserModal = (id) => {
     setUserId(id);
     document.getElementById("my_modal_7").showModal();
-    console.log("Delete user with ID:", id);
   };
 
   const handleDeleteUser = async (id) => {

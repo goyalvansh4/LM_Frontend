@@ -9,7 +9,6 @@ const Users = () => {
   const [userData, setUserData] = useState([]);
   useEffect(() => {
     FetchUserData().then((data) => {
-      console.log("Users",data);
       setUserData(data);
     });
   }, []);

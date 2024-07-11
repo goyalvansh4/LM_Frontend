@@ -39,7 +39,6 @@ const Card = () => {
     const fetchLeadStats = async () => {
       try {
         const response = await GlobalAxios.get(`/admin/dashboardStatics`);
-        console.log(response.data);
 
         if (response.data.status === "success") {
           setStat({
@@ -52,7 +51,6 @@ const Card = () => {
             totalrto: response.data.rto_statistics.total_rto,
             leadType: response.data.status_statistics,
           });
-          console.log(response.data.status_statistics);
           setPieData(response.data.status_statistics);
           setBarData(response.data.users);
         }

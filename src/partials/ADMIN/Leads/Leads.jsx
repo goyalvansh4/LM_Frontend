@@ -18,9 +18,8 @@ const Leads = () => {
   const fetch = async () => {
     try {
       const response = await GlobalAxios.get(
-        `//leads_static`
+        `/admin/leads_static`
       );
-      console.log(response.data.data);
       return response.data;
     } catch (error) {
       console.error("Error fetching leads:", error);
@@ -29,12 +28,9 @@ const Leads = () => {
   };
   useEffect(() => {
     fetch().then((data) => {
-      console.log(data.data);
       setLeadStat(data.data);
     });
   }, []);
-  // {console.log(RandomColor())}
-  // const color = RandomColor();
 
   return (
     <>

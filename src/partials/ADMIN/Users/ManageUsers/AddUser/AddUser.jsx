@@ -41,11 +41,8 @@ const AddUser = () => {
       return;
     }
     setLoading(true);
-    // Simulate an API call
-    console.log(formData);
     try {
       const response = await GlobalAxios.post("/admin/users", formData);
-      console.log(response.data);
       if (response.data.status === "success") {
         toast.success("User added successfully!");
         setFormData({

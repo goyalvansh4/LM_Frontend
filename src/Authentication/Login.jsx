@@ -38,12 +38,8 @@ const Login = () => {
 
       if (response.data.status === "success") {
         let auth_token = response.data.data.token;
-        console.log(Cookies.get("auth_token"));
-        console.log(Cookies.get("role"));
         Cookies.set("auth_token", auth_token, { expires: 1 }); // The cookie will expire in 1 days
         Cookies.set("role", (response.data.data.role))
-        console.log("Set",Cookies.get("auth_token"));
-        console.log("Set",Cookies.get("role"));
         navigate("/admin");
       } else {
         setAlertBox({ visible: true, message: response.data.message });
@@ -53,7 +49,6 @@ const Login = () => {
     }
 
     // navigate("/admin");
-    // console.log("form submitted");
   };
 
   return (

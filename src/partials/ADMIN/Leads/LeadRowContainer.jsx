@@ -88,7 +88,6 @@ const LeadRowContainer = () => {
         toast.success(response.data.message);
         setAssignLoading(false);
         LeadsData().then((data) => {
-          console.log(data);
           setLeadData(data.data);
           // setPagination({
           //   total_pages: data.paginate_data.total_pages,
@@ -100,7 +99,6 @@ const LeadRowContainer = () => {
         toast.error("Something went wrong");
       }
     } catch (error) {
-      console.log(error);
       toast.error("Something went wrong");
     }
   };
@@ -108,7 +106,6 @@ const LeadRowContainer = () => {
   useEffect(() => {
     const fetchUser = async () => {
       const response = await GlobalAxios.get("/admin/usersforlead");
-      // console.log(response.data.data);
       setUserList(response.data.data);
     };
 
@@ -163,7 +160,6 @@ const LeadRowContainer = () => {
         });
       }
     } catch (error) {
-      console.log(error.response.data);
       if (error.response.status === 401) {
         toast.error("Unauthenticated");
       } else {

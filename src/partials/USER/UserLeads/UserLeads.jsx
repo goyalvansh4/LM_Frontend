@@ -20,7 +20,6 @@ const Leads = () => {
       const response = await GlobalAxios.get(
         `/user/leads_static`
       );
-      console.log(response.data);
       setTotal(response.data.count);
        setLeadStat(response.data.data);
     } catch (error) {
@@ -30,12 +29,9 @@ const Leads = () => {
   };
   useEffect(() => {
     fetch().then((data) => {
-      console.log(data.data);
       setLeadStat(data.data);
     });
   }, []);
-  // {console.log(RandomColor())}
-  // const color = RandomColor();
 
   return (
     <>

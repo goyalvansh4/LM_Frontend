@@ -23,8 +23,6 @@ const EditUser = () => {
       try {
         const response = await GlobalAxios.get(`/admin/users/${id}`);
         if (response.data.status === "success") {
-          // toast.success("User data fetched successfully!");
-          //console.log(response.data.data);
           let userData = response.data.data;
           setFormData({
             name: userData.name,
@@ -57,10 +55,8 @@ const EditUser = () => {
     e.preventDefault();
     setLoading(true);
     // Simulate an API call
-    console.log("FormData", formData);
     try {
       const response = await GlobalAxios.put(`/admin/users/${id}`, formData);
-      console.log(response.data);
       if (response.data.status === "success") {
         toast.success("User updated successfully!");
         setLoading(false);

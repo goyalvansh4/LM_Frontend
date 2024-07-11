@@ -9,7 +9,6 @@ const LeadsData = async () => {
   const assign_to = window.assign_to || null;
   const situation = window.situation || null;
 
-  console.log("LeadsData", pageNo, rto_location, rto_year, rto_lead_status, per_page, assign_to, situation);
 
   let url = `/admin/leads?page=${pageNo}`;
 

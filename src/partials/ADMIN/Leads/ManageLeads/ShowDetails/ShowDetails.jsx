@@ -63,7 +63,6 @@ const ShowDetails = () => {
 
     try {
       const response = await GlobalAxios.post(`/admin/leads_remark`, data);
-      console.log(response.data);
       if (response.data.status === "success") {
         setLead({ ...lead, remarks: remarkText });
         toast.success("Remark added successfully!");

@@ -50,10 +50,8 @@ const UserShowDetails = () => {
     const fetchStatus = async () => {
       try {
         const response = await GlobalAxios.get("/user/statusList");
-        console.log(response.data);
         if (response.data.status === "success") {
           setStatus(response.data.data);
-          console.log(response.data.data);
         }
       } catch (error) {
         console.error("Error fetching lead status:", error);
@@ -82,7 +80,6 @@ const UserShowDetails = () => {
 
     try {
       const response = await GlobalAxios.post(`/user/lead/add_remark`, data);
-      console.log(response.data);
       if (response.data.status === "success") {
         setLead({ ...lead, remarks: remarkText });
         toast.success("Remark added successfully!");
@@ -120,7 +117,6 @@ const UserShowDetails = () => {
   };
 
   const handleStatusChange = async () => {
-    console.log(selectedStatus);
     setLead({ ...lead, status: selectedStatus });
     const data = {
       lead_id: id,
@@ -128,7 +124,6 @@ const UserShowDetails = () => {
     };
     try {
       const response = await GlobalAxios.post("/user/lead/edit_status", data);
-      console.log(response.data);
       if (response.data.status === "success") {
         toast.success("Status changed successfully!");
         let name;
@@ -137,10 +132,7 @@ const UserShowDetails = () => {
             name = item.name;
           }
         });
-
-        // console.log(response.data.data);
         setLead({ ...lead,status: selectedStatus, status_name: name });
-        console.log(name,selectedStatus);
       } else {
         toast.error("Failed to change status!");
       }

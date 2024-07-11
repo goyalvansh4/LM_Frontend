@@ -37,7 +37,6 @@ function EditLead() {
       try {
         let lead = await EditLeadData(id);
         let leadData = lead.data;
-        console.log("Lead Data: ", leadData);
         setSelectedRtoState(leadData.state_id);
         setFormData({
           register_number: leadData.register_number || "",
@@ -63,13 +62,11 @@ function EditLead() {
       }
     };
     fetch();
-    console.log("Edit Lead ID: ", id);
   }, [id]);
 
   useEffect(() => {
     const response = GlobalAxios.get("/admin/state");
     response.then((data) => {
-      console.log("State", data.data.states);
       setRto_state(data.data.states);
     });
   }, []);
@@ -84,7 +81,6 @@ function EditLead() {
   useEffect(() => {
     const fetchUsers = async () => {
       const response = await GlobalAxios.get("/admin/usersforlead");
-      console.log("Users", response.data.data);
       setUsersList(response.data.data);
     };
 
@@ -111,7 +107,6 @@ function EditLead() {
     const response = await GlobalAxios.get(
       `/admin/rtolocations/state/${value}`
     );
-    console.log(response.data.data);
     setRtoLocations(response.data.data);
     setFormData({
       ...formData,
@@ -123,7 +118,6 @@ function EditLead() {
     e.preventDefault();
     setLoading(true);
     setValidationErrors({});
-    console.log(formData);
 
     try {
       const response = await GlobalAxios.put(`/admin/leads/${id}`, formData);
