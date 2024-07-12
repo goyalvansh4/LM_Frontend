@@ -4,17 +4,19 @@ import 'react-circular-progressbar/dist/styles.css';
 
 const CircularProgressBar = ({ value, text }) => {
   return (
-    <div className="w-[50px] h-[50px]">
-      <CircularProgressbar
-        value={value}
-        text={text}
-        styles={buildStyles({
-          textColor: "#212121",
-          pathColor: "#4A90E2",
-          trailColor: "#ddd",
-        })}
-      />
-    </div>
+    <div style={{ width: '30px', height: '30px' }}>
+    <CircularProgressbar
+      value={value}
+      text={text}
+      styles={
+        buildStyles({
+        textColor: "#212121",
+        pathColor: "#4A90E2",
+        trailColor: "#ddd",
+        textSize: "40px"
+      })}
+    />
+  </div>
   );
 };
 

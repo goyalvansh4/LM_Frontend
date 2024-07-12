@@ -32,8 +32,8 @@ const Card = () => {
     totalrto: 0,
     leadType: [],
   });
- const [pieData, setPieData] = useState([]);
- const [barData, setBarData] = useState([]);
+  const [pieData, setPieData] = useState([]);
+  const [barData, setBarData] = useState([]);
 
   useEffect(() => {
     const fetchLeadStats = async () => {
@@ -62,7 +62,6 @@ const Card = () => {
     fetchLeadStats();
   }, []);
 
-
   return (
     <div className="px-4 sm:px-6 lg:px-8 py-8 w-full mx-auto">
       <div className="sm:flex sm:justify-between sm:items-center mb-8">
@@ -70,25 +69,27 @@ const Card = () => {
       </div>
 
       {/* Top three progress bars */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
-        <div className="flex flex-col items-center bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg transition-transform transform hover:scale-105">
-          <SiGoogleads className="text-blue-500 text-4xl mb-4" />
-          <CircularProgressbar
-            value={stat.totallead}
-            text={stat.totallead}
-            styles={buildStyles({
-              textSize: "24px",
-              pathColor: "#3b82f6",
-              textColor: "#3b82f6",
-            })}
-          />
-          <h3 className="text-xl font-semibold dark:text-white mt-4">
-            Total Leads
+      <div className="flex flex-wrap justify-between gap-4 mb-6 ">
+        <div className="flex w-[90%] md:w-[350px] mx-auto flex-col gap-2 justify-center items-center bg-white dark:bg-gray-800 px-6 py-2 rounded-lg shadow-lg transition-transform transform hover:scale-105">
+          <div className="w-[80%]">
+            <CircularProgressbar
+              value={stat.totallead}
+              text={stat.totallead}
+              styles={buildStyles({
+                textSize: "24px",
+                pathColor: "#3b82f6",
+                textColor: "#3b82f6",
+              })}
+            />
+          </div>
+          <h3 className="text-xl flex gap-2 items-center font-semibold dark:text-white">
+          <SiGoogleads className="text-blue-500 text-4xl" />Total Leads
           </h3>
         </div>
 
-        <div className="flex flex-col items-center bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg transition-transform transform hover:scale-105">
-          <FaUsers className="text-green-500 text-4xl mb-4" />
+        <div className="flex w-[90%] md:w-[350px] mx-auto flex-col  gap-2 items-center bg-white dark:bg-gray-800 px-6 py-2 rounded-lg shadow-lg transition-transform transform hover:scale-105">
+          {/* */}
+          <div className="w-[80%]">
           <CircularProgressbar
             value={stat.totaluser}
             text={stat.totaluser}
@@ -97,14 +98,15 @@ const Card = () => {
               pathColor: "#10b981",
               textColor: "#10b981",
             })}
-          />
-          <h3 className="text-xl font-semibold dark:text-white mt-4">
-            Total Users
+          /> 
+          </div>
+          <h3 className="flex gap-2 items-center text-xl font-semibold dark:text-white">
+          <FaUsers className="text-green-500 text-4xl" />Total Users
           </h3>
         </div>
 
-        <div className="flex flex-col items-center bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg transition-transform transform hover:scale-105">
-          <IoLocation className="text-green-500 text-4xl mb-4" />
+        <div className="flex w-[90%] md:w-[350px] mx-auto flex-col items-center bg-white dark:bg-gray-800 px-6 py-2 rounded-lg shadow-lg transition-transform transform hover:scale-105">
+          <div className="w-[80%]">
           <CircularProgressbar
             value={stat.totalrto}
             text={stat.totalrto}
@@ -113,16 +115,17 @@ const Card = () => {
               pathColor: "#10b981",
               textColor: "#10b981",
             })}
-          />
-          <h3 className="text-xl font-semibold dark:text-white mt-4">
-            Total RTO
+          /> 
+          </div>
+          <h3 className="flex gap-2 items-center  text-xl font-semibold dark:text-white">
+          <IoLocation className="text-green-500 text-4xl " /> Total RTO
           </h3>
         </div>
       </div>
 
       {/* Graphs row */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6 p-4 bg-white rounded-lg shadow-md dark:bg-gray-500 dark:text-white">
-        <div style={{ height: "400px" }} className="dark:text-white">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6 p-4 bg-white rounded-lg shadow-md dark:bg-gray-800 dark:text-white">
+        <div style={{ height: "450px" }} className="text-xl dark:text-black dark:bg-gray-500">
           <ResponsivePie
             data={pieData}
             margin={{ top: 40, right: 80, bottom: 80, left: 80 }}
@@ -131,23 +134,23 @@ const Card = () => {
             cornerRadius={3}
             colors={{ scheme: "nivo" }}
             borderWidth={3}
-            borderColor={{ from: "color", modifiers: [["darker", 1.6]] }}
+            borderColor={{ from: "color", modifiers: [["darker", 0.5]] }}
             radialLabelsSkipAngle={10}
             radialLabelsTextXOffset={10}
-            radialLabelsTextColor={"white"}
+            radialLabelsTextColor={"black"}
             radialLabelsLinkOffset={10}
             radialLabelsLinkDiagonalLength={16}
             radialLabelsLinkHorizontalLength={24}
             radialLabelsLinkStrokeWidth={1}
             radialLabelsLinkColor={{ from: "color" }}
             slicesLabelsSkipAngle={10}
-            slicesLabelsTextColor={"white"}
+            slicesLabelsTextColor={"black"}
             animate={true}
             motionStiffness={90}
             motionDamping={15}
           />
         </div>
-        <div style={{ height: "400px" }}>
+        <div style={{ height: "450px" }} className="text-xl dark:text-black dark:bg-gray-500">
           <ResponsiveBar
             data={barData}
             keys={["value"]}
@@ -158,11 +161,9 @@ const Card = () => {
             indexScale={{ type: "band", round: true }}
             colors={{ scheme: "nivo" }}
             borderColor={{ from: "color", modifiers: [["darker", 1.6]] }}
-            axisTop={
-              {
-                tickPadding: 5, 
-              }
-            }
+            axisTop={{
+              tickPadding: 5,
+            }}
             axisRight={null}
             axisBottom={{
               tickSize: 15,
