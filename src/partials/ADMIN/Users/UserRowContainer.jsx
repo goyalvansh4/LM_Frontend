@@ -122,17 +122,16 @@ const UserRowContainer = () => {
                     {user.assign_lead_count}
                   </span>
                 </td>
-
-                <td className="px-6 py-4 text-sm leading-5 text-gray-500 whitespace-no-wrap border-b border-gray-200 dark:text-gray-400 dark:border-gray-700">
+                <td className="px-6 text-center py-4 text-sm leading-5 text-gray-500 whitespace-no-wrap border-b border-gray-200 dark:text-gray-400 dark:border-gray-700">
                   {moment(user.createdAt).format("D - MMMM - YYYY")}
                 </td>
                 <td className="px-6 py-4 text-sm leading-5 whitespace-no-wrap border-b border-gray-200 dark:border-gray-700">
                   {user.status === "active" ? (
-                    <span className="inline-flex items-center px-3 py-1 text-xs font-medium leading-4 text-white bg-green-500 rounded-full dark:bg-green-600 dark:text-gray-100">
+                    <span className="text-center inline-flex items-center px-3 justify-center py-1 text-xs font-medium leading-4 text-white bg-green-500 rounded-full dark:bg-green-600 dark:text-gray-100">
                       Active
                     </span>
                   ) : (
-                    <span className="inline-flex items-center px-3 py-1 text-xs font-medium leading-4 text-white bg-red-500 rounded-full dark:bg-red-600 dark:text-gray-100">
+                    <span className="inline-flex text-center items-center px-3 py-1 text-xs justify-center font-medium leading-4 text-white bg-red-500 rounded-full dark:bg-red-600 dark:text-gray-100">
                       Not Active
                     </span>
                   )}
