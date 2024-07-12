@@ -1,12 +1,29 @@
-import React, { useState } from "react";
-import { Route, Routes } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { Route, Routes, useNavigate } from "react-router-dom";
 import UserSidebar from "../UserSidebar";
 import Header from "../../Header";
 import UserCard from "./UserCard";
 import UserLeadContainer from "../UserLeads/UserLeadContainer";
+import useAuth from "../../../hooks/useAuth";
 
 function UserDashboard() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const { token, role } = useAuth();
+  const navigate = useNavigate();
+  const [firstTimeFetch, setFirstTimeFetch] = useState(true);
+
+  useEffect(() => {
+    const reload = () =>{
+      setFirstTimeFetch(false)
+      if (token && role === "user") {
+        navigate(); // Forces a page reload  
+      }
+    }
+    if(firstTimeFetch){
+      reload()
+      setFirstTimeFetch(false)
+    } 
+  }, []);
 
   return (
     <div className="flex h-screen overflow-hidden">

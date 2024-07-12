@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Transition from '../utils/Transition';
+import Cookies from "js-cookie";
 
 
 function DropdownProfile({
@@ -38,8 +39,10 @@ function DropdownProfile({
 
   const handleSignOut = () => {
     setDropdownOpen(!dropdownOpen)
-    document.cookie = `auth_token=${null}; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
-    document.cookie = `role=${null}; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
+    // document.cookie = `auth_token=${null}; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
+    // document.cookie = `role=${null}; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
+    Cookies.remove("auth_token");
+    Cookies.remove("role");
     navigate("/")
   }
 
@@ -77,7 +80,8 @@ function DropdownProfile({
         >
           <div className="pt-0.5 pb-2 px-3 mb-1 border-b border-slate-200 dark:border-slate-700">
             <div className="font-medium text-slate-800 dark:text-slate-100">LM</div>
-            <div className="text-xs text-slate-500 dark:text-slate-400 italic">Admin</div>
+            <div className="text-xs text-slate-500 dark:text-slate-400 italic">{
+             ( Cookies.get("role") === "admin" ? "Admin" : "User")}</div>
           </div>
           <ul>
             <li>

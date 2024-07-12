@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Route, Routes } from "react-router-dom";
+import { Route, Routes, useNavigate } from "react-router-dom";
 import Sidebar from "../Sidebar";
 import Header from "../../Header";
 import Card from "./Card";
@@ -7,13 +7,25 @@ import LeadContainer from "../Leads/LeadContainer";
 import UserContainer from "../Users/UserContainer";
 import AddStatus from "../Status/AddStatus";
 import AddRto from "../RTO/AddRto";
+import useAuth from "../../../hooks/useAuth";
 
 function Dashboard() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
+
+  const { token, role } = useAuth();
+  const navigate = useNavigate();
+  const [firstTimeFetch, setFirstTimeFetch] = useState(true);
+
   useEffect(() => {
-    if (localStorage.getItem("refresh") === null) {
-      localStorage.setItem("refresh", "true");
-      window.location.href = window.location.href;
+    const reload = () => {
+      setFirstTimeFetch(false);
+      if (token && role === "admin") {
+        navigate(); // Forces a page reload
+      }
+    };
+    if (firstTimeFetch) {
+      reload();
+      setFirstTimeFetch(false);
     }
   }, []);
 
