@@ -332,7 +332,6 @@ function EditLead() {
                   name="assign_to"
                   value={formData.assign_to || ""}
                   onChange={handleChange}
-                  required
                   className="w-full border-gray-300 dark:border-gray-600 rounded-md shadow-sm p-2 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-200 focus:border-indigo-500 focus:ring-indigo-500"
                 >
                   <option value="">Select User</option>

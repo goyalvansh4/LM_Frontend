@@ -28,6 +28,9 @@ const UserCard = () => {
           type: response.data.data,
         });
       } catch (error) {
+        if(error.response.status === 403){
+          window.location.href = window.location.href;
+        }
         console.error("Error fetching leads:", error);
         throw error;
       }

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import Cookies from "js-cookie";
 import GlobalAxios from "../Global/GlobalAxios";
@@ -10,7 +10,12 @@ const Login = () => {
     email: "",
     password: "",
   });
-
+ useEffect(() => {
+    if (Cookies.get("auth_token") && Cookies.get("role")) {
+       Cookies.remove("auth_token");
+       Cookies.remove("role");
+    }
+ }, []);
   const [isLoading, setIsLoading] = useState(false);
 
   const handleChange = (e) => {

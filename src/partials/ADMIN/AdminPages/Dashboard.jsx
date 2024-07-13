@@ -8,26 +8,10 @@ import UserContainer from "../Users/UserContainer";
 import AddStatus from "../Status/AddStatus";
 import AddRto from "../RTO/AddRto";
 import useAuth from "../../../hooks/useAuth";
+import Cookies from "js-cookie";
 
 function Dashboard() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
-
-  const { token, role } = useAuth();
-  const navigate = useNavigate();
-  const [firstTimeFetch, setFirstTimeFetch] = useState(true);
-
-  useEffect(() => {
-    const reload = () => {
-      setFirstTimeFetch(false);
-      if (token && role === "admin") {
-        navigate(); // Forces a page reload
-      }
-    };
-    if (firstTimeFetch) {
-      reload();
-      setFirstTimeFetch(false);
-    }
-  }, []);
 
   return (
     <div className="flex h-screen overflow-hidden">

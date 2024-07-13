@@ -8,7 +8,9 @@ import {
   MdOutlineAssignmentInd,
   MdOutlineAssignmentLate,
   MdSevereCold,
+  MdOutlineWbSunny,
 } from "react-icons/md";
+import { GiMeltingIceCube } from "react-icons/gi";
 import { IoLocation } from "react-icons/io5";
 import GlobalAxios from "../../../Global/GlobalAxios";
 import { RandomColor } from "../../../utils/RandomColor";
@@ -17,9 +19,11 @@ import { ResponsiveBar } from "@nivo/bar";
 
 const Card = () => {
   const icons = [
-    { component: AiOutlineFire },
-    { component: AiOutlineClockCircle },
     { component: MdSevereCold },
+    { component: AiOutlineClockCircle },
+    { component: GiMeltingIceCube },
+    { component: AiOutlineFire },
+    { component: MdOutlineWbSunny },
   ];
 
   const [stat, setStat] = useState({
@@ -55,6 +59,9 @@ const Card = () => {
           setBarData(response.data.users);
         }
       } catch (error) {
+        if(error.response.status === 403){
+        window.location.href = window.location.href;
+        } 
         console.error("Error fetching lead stats:", error);
       }
     };
@@ -70,7 +77,7 @@ const Card = () => {
 
       {/* Top three progress bars */}
       <div className="flex flex-wrap justify-between gap-4 mb-6 ">
-        <div className="flex w-[90%] md:w-[350px] mx-auto flex-col gap-2 justify-center items-center bg-white dark:bg-gray-800 px-6 py-2 rounded-lg shadow-lg transition-transform transform hover:scale-105">
+        <div className="flex w-[90%] md:w-[360px] mx-auto flex-col gap-2 justify-center items-center bg-white dark:bg-gray-800 px-8 py-2 rounded-lg shadow-lg transition-transform transform hover:scale-105">
           <div className="w-[80%]">
             <CircularProgressbar
               value={stat.totallead}
@@ -83,49 +90,54 @@ const Card = () => {
             />
           </div>
           <h3 className="text-xl flex gap-2 items-center font-semibold dark:text-white">
-          <SiGoogleads className="text-blue-500 text-4xl" />Total Leads
+            <SiGoogleads className="text-blue-500 text-4xl" />
+            Total Leads
           </h3>
         </div>
 
-        <div className="flex w-[90%] md:w-[350px] mx-auto flex-col  gap-2 items-center bg-white dark:bg-gray-800 px-6 py-2 rounded-lg shadow-lg transition-transform transform hover:scale-105">
+        <div className="flex w-[90%] md:w-[360px] mx-auto flex-col  gap-2 items-center bg-white dark:bg-gray-800 px-8 py-2 rounded-lg shadow-lg transition-transform transform hover:scale-105">
           {/* */}
           <div className="w-[80%]">
-          <CircularProgressbar
-            value={stat.totaluser}
-            text={stat.totaluser}
-            styles={buildStyles({
-              textSize: "24px",
-              pathColor: "#10b981",
-              textColor: "#10b981",
-            })}
-          /> 
+            <CircularProgressbar
+              value={stat.totaluser}
+              text={stat.totaluser}
+              styles={buildStyles({
+                textSize: "24px",
+                pathColor: "#10b981",
+                textColor: "#10b981",
+              })}
+            />
           </div>
           <h3 className="flex gap-2 items-center text-xl font-semibold dark:text-white">
-          <FaUsers className="text-green-500 text-4xl" />Total Users
+            <FaUsers className="text-green-500 text-4xl" />
+            Total Users
           </h3>
         </div>
 
-        <div className="flex w-[90%] md:w-[350px] mx-auto flex-col items-center bg-white dark:bg-gray-800 px-6 py-2 rounded-lg shadow-lg transition-transform transform hover:scale-105">
+        <div className="flex w-[90%] md:w-[360px] mx-auto flex-col items-center bg-white dark:bg-gray-800 px-8 py-2 rounded-lg shadow-lg transition-transform transform hover:scale-105">
           <div className="w-[80%]">
-          <CircularProgressbar
-            value={stat.totalrto}
-            text={stat.totalrto}
-            styles={buildStyles({
-              textSize: "24px",
-              pathColor: "#10b981",
-              textColor: "#10b981",
-            })}
-          /> 
+            <CircularProgressbar
+              value={stat.totalrto}
+              text={stat.totalrto}
+              styles={buildStyles({
+                textSize: "24px",
+                pathColor: "#10b981",
+                textColor: "#10b981",
+              })}
+            />
           </div>
           <h3 className="flex gap-2 items-center  text-xl font-semibold dark:text-white">
-          <IoLocation className="text-green-500 text-4xl " /> Total RTO
+            <IoLocation className="text-green-500 text-4xl " /> Total RTO
           </h3>
         </div>
       </div>
 
       {/* Graphs row */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6 p-4 bg-white rounded-lg shadow-md dark:bg-gray-800 dark:text-white">
-        <div style={{ height: "450px" }} className="text-xl dark:text-black dark:bg-gray-500">
+        <div
+          style={{ height: "450px" }}
+          className="text-xl dark:text-black dark:bg-gray-500"
+        >
           <ResponsivePie
             data={pieData}
             margin={{ top: 40, right: 80, bottom: 80, left: 80 }}
@@ -150,7 +162,10 @@ const Card = () => {
             motionDamping={15}
           />
         </div>
-        <div style={{ height: "450px" }} className="text-xl dark:text-black dark:bg-gray-500">
+        <div
+          style={{ height: "450px" }}
+          className="text-xl dark:text-black dark:bg-gray-500"
+        >
           <ResponsiveBar
             data={barData}
             keys={["value"]}
@@ -263,7 +278,7 @@ const Card = () => {
         </div>
 
         {stat.leadType.map((lead, index) => {
-          const IconComponent = icons[index % 3].component;
+          const IconComponent = icons[index % 10].component;
           const color = RandomColor();
           return (
             <div

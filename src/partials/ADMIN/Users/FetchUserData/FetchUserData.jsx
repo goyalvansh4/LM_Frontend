@@ -1,4 +1,3 @@
-import React, { useEffect } from "react";
 import GlobalAxios from "../../../../Global/GlobalAxios";
 
 const FetchUserData = async() => {
@@ -6,8 +5,10 @@ const FetchUserData = async() => {
       const response = await GlobalAxios.get("/admin/users");
       return response.data;
     } catch (error) {
+      alert("An error occurred. Please try again.");
       console.log("Error:", error);
     }
+
 };
 
 export default FetchUserData;

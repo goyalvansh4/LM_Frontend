@@ -104,7 +104,6 @@ const LeadHead = () => {
               </div>
               <p className="text-sm">Data that we expect:</p>
               <p className="font-bold">Format of CSV File</p>
-              <p>Stop on failure</p>
               <table className="w-full border-2 border-gray-500">
                 <thead className="bg-gray-50">
                   <tr className="flex justify-between gap-4 px-4">
@@ -151,13 +150,7 @@ const LeadHead = () => {
                     Upload
                   </button>
                   </>
-                )}
-                   <input
-                  type="checkbox"
-                  className="w-full p-2 border-2 border-dashed border-gray-300 rounded-lg"
-                  // onChange={handleFileChange}
-                />
-                  <p>Stop on Failure</p>  
+                )} 
                 <button
                   className="w-full px-4 py-2 bg-white text-black rounded-md border-2"
                   onClick={closeModal}
