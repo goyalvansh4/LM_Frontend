@@ -4,6 +4,7 @@ import { Route, Routes } from "react-router-dom";
 import LeadHome from "./LeadHome";
 import EditLead from "./ManageLeads/EditLead/EditLead";
 import ShowDetails from "./ManageLeads/ShowDetails/ShowDetails";
+import AddBulkLeads from "./ManageLeads/AddBulkLeads/AddBulkLeads";
 
 const LeadContainer = () => {
   return (
@@ -11,6 +12,7 @@ const LeadContainer = () => {
       <div className="container flex px-2 flex-col gap-1 lg:px-6 py-8 mx-auto">
         <Routes>
           <Route path="/" element={<LeadHome />} />
+          <Route path="import" element={<AddBulkLeads />} />
           <Route path="add" element={<AddLead />} />
           <Route path="edit/:id" element={<EditLead />} />
           <Route path="showDetails/:id" element={<ShowDetails />} />
