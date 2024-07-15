@@ -1,22 +1,20 @@
 import React, { useEffect, useState } from "react";
 import { SiGoogleads } from "react-icons/si";
 import { AiOutlineFire, AiOutlineClockCircle } from "react-icons/ai";
-import {
-  MdSevereCold,
-} from "react-icons/md";
+import { MdSevereCold } from "react-icons/md";
 import GlobalAxios from "../../../Global/GlobalAxios";
 import { RandomColor } from "../../../utils/RandomColor";
 
 const UserCard = () => {
   const [leadStat, setLeadStat] = useState({
-     total: 0,
-      type:[],
+    total: 0,
+    type: [],
   });
 
   const icons = [
     { component: AiOutlineFire },
-    { component: AiOutlineClockCircle},
-    { component: MdSevereCold}
+    { component: AiOutlineClockCircle },
+    { component: MdSevereCold },
   ];
 
   useEffect(() => {
@@ -28,7 +26,11 @@ const UserCard = () => {
           type: response.data.data,
         });
       } catch (error) {
-        if(error.response.status === 403){
+        if (
+          error.response.status === 403 ||
+          error.response.status === 401 ||
+          error.response.status === 400
+        ) {
           window.location.href = window.location.href;
         }
         console.error("Error fetching leads:", error);
@@ -59,23 +61,27 @@ const UserCard = () => {
 
         {/* Hot Leads */}
         {leadStat.type.map((lead, index) => {
-          const IconComponent = icons[index%3].component;
-          return <div key={index} className="flex flex-col items-center bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg transition-transform transform hover:scale-105">
-          <IconComponent
-           style={{
-            color: RandomColor(),
-           }} 
-           className="text-4xl mb-4" />
-          <h3 className="text-xl font-semibold dark:text-white mt-4">
-            {lead.name}
-          </h3>
-          <p className="text-2xl font-bold dark:text-gray-400 mt-2">
-            {lead.lead_count}
-          </p>
-        </div>
+          const IconComponent = icons[index % 3].component;
+          return (
+            <div
+              key={index}
+              className="flex flex-col items-center bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg transition-transform transform hover:scale-105"
+            >
+              <IconComponent
+                style={{
+                  color: RandomColor(),
+                }}
+                className="text-4xl mb-4"
+              />
+              <h3 className="text-xl font-semibold dark:text-white mt-4">
+                {lead.name}
+              </h3>
+              <p className="text-2xl font-bold dark:text-gray-400 mt-2">
+                {lead.lead_count}
+              </p>
+            </div>
+          );
         })}
-
-        
       </div>
     </div>
   );

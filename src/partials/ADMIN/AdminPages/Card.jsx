@@ -59,9 +59,13 @@ const Card = () => {
           setBarData(response.data.users);
         }
       } catch (error) {
-        if(error.response.status === 403){
-        window.location.href = window.location.href;
-        } 
+        if (
+          error.response.status === 403 ||
+          error.response.status === 401 ||
+          error.response.status === 400
+        ) {
+          window.location.href = window.location.href;
+        }
         console.error("Error fetching lead stats:", error);
       }
     };
