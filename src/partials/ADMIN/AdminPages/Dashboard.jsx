@@ -3,12 +3,12 @@ import { Route, Routes, useNavigate } from "react-router-dom";
 import Sidebar from "../Sidebar";
 import Header from "../../Header";
 import Card from "./Card";
-import LeadContainer from "../Leads/LeadContainer";
-import UserContainer from "../Users/UserContainer";
-import AddStatus from "../Status/AddStatus";
-import AddRto from "../RTO/AddRto";
-import useAuth from "../../../hooks/useAuth";
-import Cookies from "js-cookie";
+import CategoryContainer from "../Categories/CategoryContainer";
+import ProductContainer from "../Products/ProductContainer";
+import AddCategory from "../Category/AddCategory";
+import AddProduct from "../Product/AddProduct";
+// import useAuth from "../../../hooks/useAuth";
+// import Cookies from "js-cookie";
 
 function Dashboard() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -26,10 +26,10 @@ function Dashboard() {
         <main>
           <Routes>
             <Route path="/" element={<Card />} />
-            <Route path="leads/*" element={<LeadContainer />} />
-            <Route path="users/*" element={<UserContainer />} />
-            <Route path="addStatus" element={<AddStatus />} />
-            <Route path="addRTO" element={<AddRto />} />
+            <Route path="categories/*" element={<CategoryContainer />} />
+            <Route path="products/*" element={<ProductContainer />} />
+            <Route path="addCategory" element={<AddCategory />} />
+            <Route path="addProducts" element={<AddProduct />} />
           </Routes>
         </main>
       </div>

@@ -66,7 +66,7 @@ const Card = () => {
         ) {
           window.location.href = window.location.href;
         }
-        console.error("Error fetching lead stats:", error);
+        console.error("Error fetching category stats:", error);
       }
     };
 
@@ -281,20 +281,20 @@ const Card = () => {
           </p>
         </div>
 
-        {stat.leadType.map((lead, index) => {
+        {stat.leadType.map((category, index) => {
           const IconComponent = icons[index % 10].component;
           const color = RandomColor();
           return (
             <div
-              key={lead.id}
+              key={category.id}
               className="flex flex-col items-center bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg transition-transform transform hover:scale-105"
             >
               <IconComponent style={{ color }} className="text-4xl mb-4" />
               <h3 className="uppercase text-xl font-semibold dark:text-white mt-4">
-                {lead.label}
+                {category.label}
               </h3>
               <p className="text-2xl font-bold dark:text-gray-400 mt-2">
-                {lead.value}
+                {category.value}
               </p>
             </div>
           );

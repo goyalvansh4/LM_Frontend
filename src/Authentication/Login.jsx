@@ -27,29 +27,29 @@ const Login = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setIsLoading(true);
+    // setIsLoading(true);
+    navigate("/admin");
+    // try {
+    //   const response = await GlobalAxios.post("/admin/login", {
+    //     email: formData.email,
+    //     password: formData.password,
+    //   });
 
-    try {
-      const response = await GlobalAxios.post("/admin/login", {
-        email: formData.email,
-        password: formData.password,
-      });
-
-      if (response.data.status === "success") {
-        let auth_token = response.data.data.token;
-        Cookies.set("auth_token", auth_token, { expires: 1 });
-        Cookies.set("role", response.data.data.role);
-        //toast.success("Login successful!", { autoClose: 2000 });
-        navigate("/admin");
-      } else {
-        toast.error(response.data.message, { autoClose: 1000 });
-      }
-    } catch (error) {
-      console.error("Error posting data:", error);
-      toast.error("An error occurred. Please try again.", { autoClose: 1000 });
-    } finally {
-      setIsLoading(false);
-    }
+    //   if (response.data.status === "success") {
+    //     let auth_token = response.data.data.token;
+    //     Cookies.set("auth_token", auth_token, { expires: 1 });
+    //     Cookies.set("role", response.data.data.role);
+    //     //toast.success("Login successful!", { autoClose: 2000 });
+    //     
+    //   } else {
+    //     toast.error(response.data.message, { autoClose: 1000 });
+    //   }
+    // } catch (error) {
+    //   console.error("Error posting data:", error);
+    //   toast.error("An error occurred. Please try again.", { autoClose: 1000 });
+    // } finally {
+    //   setIsLoading(false);
+    // }
   };
 
   return (
